@@ -3,6 +3,9 @@
 ## fishy = TRUE: ln of likelihood computed according to eq (1) on page 1,
 ## Adot taken at the middle of the branch, (talpha1-talpha0) = length of the branch
 lnlikelihood_exp <-function(node_data, lambda, fishy = FALSE){
+  if (class(node_data) == "list"){
+    node_data <- node_data[[1]]
+  }
   beta_branches = node_data[node_data["event_indicator"]==0,]
   alpha_branches = node_data[node_data["event_indicator"]==1,]
   if (fishy){
@@ -47,6 +50,9 @@ lnlikelihood_exp <-function(node_data, lambda, fishy = FALSE){
 ## fishy = TRUE: ln of likelihood computed according to eq (1) on page 1,
 ## Adot taken at the middle of the branch, (talpha1-talpha0) = length of the branch
 lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
+  if (class(node_data) == "list"){
+    node_data <- node_data[[1]]
+  }
   beta_branches = node_data[node_data["event_indicator"]==0,]
   alpha_branches = node_data[node_data["event_indicator"]==1,]
   if (fishy){
@@ -136,7 +142,7 @@ lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  muta
   
   lratios <- lapply (names(data), function(elm, mutation_position){
     mutation_position <- mutation_position
-    node_data <- data[[elm]]
+    node_data <- data[elm]
     if (is.null(parameters)){
       node_roots <- as.list(find_single_root(node_data, mutation_position))
     }
@@ -186,4 +192,16 @@ lrt_procedure(data = splitted, prot = prot, tag = "without_negative_roots", fish
 sink()
 
 
+###
+parameters <- n2_prms 
+parameters <- data.frame(matrix(unlist(parameters), nrow=length(parameters), byrow=T),stringsAsFactors=FALSE)
+names(parameters) <- c("node", "lambda_exp_root", "lambda_root", "p_root", "p_precision" )
+parameters <- transform(parameters, lambda_exp_root = as.numeric(lambda_exp_root), lambda_root = as.numeric(lambda_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))
+filtered <-parameters[!is.na(parameters$p_precision) ,]
+filtered <-filtered[filtered$p_precision< 1e-5  ,]
+#filtered <-filtered[filtered$p_root< 30  ,]
+df <-filtered[,c("lambda_root", "p_root")]
+plot(df$p_root, df$lambda_root, main = "n2")
+plot(df$p_root, df$lambda_root, xlim = c(0, 1.5), ylim = c(0, 0.1), main = "n2")
+h1_kmeans <-kmeans(df, 3)
 

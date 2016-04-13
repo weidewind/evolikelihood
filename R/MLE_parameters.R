@@ -5,15 +5,37 @@ library("rbenchmark")
 
 
 ## multiroot, finds only one root 
-find_single_root <- function(node_data, mutation_position, rklist = list(1), jack = FALSE, verbose=TRUE){
-  if (sum(node_data$event) != 0){
+find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, verbose=TRUE){
+  # data is a list of dataframes, node_data is a dataframe
+
+  if (length(data) = 1){
+    mode = "single"
+    node_data = data[[1]]
+    rkvector = c(1)
+    names(rkvector) = names(node_data)
     if (verbose){
+      print ("Running in single mode")
+    }
+  }
+  else {
+    mode = "group"
+    if (verbose){
+      print ("Running in group mode")
+    }
+    if(is.null(rkvector){
+      stop ("In group mode argument rkvector must be provided")
+    })
+  }
+  
+  
+  if (mode == "group" || (mode == "single" && sum(node_data$event) != 0)){
+    if (verbose && mode == "single"){
       print (node_data)
       print (paste("site ", node_data[2,1], " node ", node_data[2,2]))
       print (paste("number of mutations ", sum(node_data$event)))
     }
     
-    pars <- list(node_data = node_data, mutation_position = mutation_position)
+    pars <- list(data = data, rkvector, mutation_position = mutation_position)
     lambda_exp_root <- lambda_derivative_exp(pars)
     if (verbose){print(paste("expon_lambda root ", lambda_exp_root))}
     
@@ -47,7 +69,7 @@ find_single_root <- function(node_data, mutation_position, rklist = list(1), jac
     }
     
     else {
-      pars <- list(p = solution_p$root, node_data = node_data, mutation_position = mutation_position)
+      pars <- list(p = solution_p$root, data = data, rkvector, mutation_position = mutation_position)
       lambda_root <- lambda_derivative_weib(pars)
       if (verbose){ print (c(p_root = solution_p$root, lambda_root = lambda_root))}
       c(p_root = solution_p$root, p_precision = solution_p$estim.precis,
@@ -57,7 +79,7 @@ find_single_root <- function(node_data, mutation_position, rklist = list(1), jac
     
   }
   else {
-    if (verbose){ 
+    if (verbose && mode == "single"){ 
       print (paste("site ", node_data[2,1], " node ", node_data[2,2]))
       print ("No mutations in the subtree, all roots NA")
     }
@@ -72,7 +94,7 @@ parameters <-function(data, mutation_position = "end", fishy = FALSE, filter = T
   
   ps <- lapply (names(data), function(elm, mut_pos){
     mutation_position <- mut_pos
-    node_data <- data[[elm]]
+    node_data <- data[elm]
     node_roots <- find_single_root(node_data, mutation_position, jack = jack, verbose = verbose)
     if (!filter || filter && !is.na(node_roots) &&  all(is.finite(node_roots)) && node_roots["p_precision"] < 1e-5 ) {
         c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"])

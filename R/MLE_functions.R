@@ -4,26 +4,35 @@
 # maximum likelihood estimation for lambda (exponential distribution)
 
 lambda_derivative_exp <- function(parms){
-  node_data <- parms$node_data
+  data <- parms$data
+  rkvector <- parms$rkvector
+  if(is.null(rkvector)){
+    rkvector <- c(1)
+    names(rkvector) = names(data)
+  }
   mutation_position <- parms$mutation_position
-  if (mutation_position == "start"){
-    no_events_branches = node_data[node_data["event_indicator"]==0,]
-  }
-  else if (mutation_position == "end"){
-    no_events_branches = node_data
-  }
-  else {
-    stop('Value of mutation_position parameter must either "start" or "end"')
+  
+  if (mutation_position != "start" && mutation_position != "end") {
+    stop('Value of mutation_position parameter must be either "start" or "end"')
   }
   
-  apply_res <- apply( no_events_branches, 1,
-                      function(elm){
-                        tbeta1 <- as.numeric(elm["t_branch_end"])
-                        tbeta0 <- as.numeric(elm["t_branch_start"])
-                        tbeta1-tbeta0
-                      })
+  D_vector <- compute_d_vector(data, rkvector)
+  D <- sum(D_vector)
   
-  x <- sum (node_data$event)/sum( apply_res )
+  branch_vector <- sapply(names(data), function (name){
+    with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+      apply_res <- apply( no_events_branches, 1,
+                          function(br){
+                            tbeta1 <- as.numeric(br["t_branch_end"])
+                            tbeta0 <- as.numeric(br["t_branch_start"])
+                            tbeta1-tbeta0
+                          })
+      apply_res*r
+    })
+  })
+
+  
+  x <- D/sum( branch_vector )
   x
 }
 
@@ -31,33 +40,49 @@ lambda_derivative_exp <- function(parms){
 # maximum likelihood estimation for lambda (weibull distribution)
 
 lambda_derivative_weib <- function (parms) {
-  node_data <- parms$node_data
+  
+  data <- parms$data
+  rkvector <- parms$rkvector
+  if(is.null(rkvector)){
+    rkvector <- c(1)
+    names(rkvector) = names(data)
+  }
   p <- parms$p
   mutation_position <- parms$mutation_position
+  
+  if (mutation_position != "start" && mutation_position != "end") {
+    stop('Value of mutation_position parameter must be either "start" or "end"')
+  }
+  
+  D_vector <- compute_d_vector(data, rkvector)
+  D <- sum(D_vector)
+  
+  denominator_vector <- sapply(names(data), function (name){
+    with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+      apply_res <- p_denominator_vector(no_events_branches, p)
+      apply_res*r
+    })
+  })
+  
+  x <- (D/sum(denominator_vector))^(1/p)
+  x
+  
+}
+
+supplier <- function (data,  rkvector, elm, mutation_position){
+  node_data <- data[[elm]]
+  r <- rkvector[elm]
   if (mutation_position == "start"){
     no_events_branches = node_data[node_data["event_indicator"]==0,]
   }
   else if (mutation_position == "end"){
     no_events_branches = node_data
   }
-  else {
-    stop('Value of mutation_position parameter must either "start" or "end"')
-  }
+  events_branches = node_data[node_data["event_indicator"]==1,]
   
-  apply_res <- apply( no_events_branches, 1,
-                      function(elm){
-                        tbeta1 <- as.numeric(elm["t_branch_end"])
-                        tbeta0 <- as.numeric(elm["t_branch_start"])
-                        if (tbeta1 == 0){0}
-                        else {
-                          (tbeta1^p)*(1-(tbeta0/tbeta1)^p)
-                        }
-                      })
-  
-  x <- (sum (node_data$event)/sum( apply_res ))^(1/p)
-  x
-  
+  list(r = r, no_events_branches = no_events_branches, events_branches = events_branches)
 }
+
 
 
 # weibull equation (2) multiplied by p
@@ -66,100 +91,50 @@ lambda_derivative_weib <- function (parms) {
 # or for plotting derivative of loglikelihood function d(logL)/d(p) (weibull equation (2)) (draw=TRUE)
 
 p_derivative <- function (x, parms, draw=FALSE) {
-  
-  #checking input
-  if(is.null(parms$node_data)){
-    if(is.null(parms$data) || is.null(parms$rklist)){
-      stop ("Parms list must contain either node_data, or data and rklist")
-    }
-    else {group = TRUE} 
-  }
-  else {
-    if(!is.null(parms$data) || !is.null(parms$rklist)){
-      stop ("Parms list must contain either node_data, or data and rklist")
-    }
-    else {group = FALSE} 
-  }
-  ##
-  
-  if (group){
-    data <- parms$data
-    rklist <- parms$rklist
-  }
-  else {
-    data <- list(parms$node_data)
-    rklist <- c(1)
-    #node_data <- parms$node_data
-  }
-  mutation_position <- parms$mutation_position
-  ##
-  
- # for (node_data in category_data){
- 
- D_vector <- sapply(names(data), function (elm){
-   node_data <- data[[elm]]
-   r <- rklist[rklist$node == elm, 2]
-   sum (node_data["event_indicator"]) * r
- })
- 
- Dk <- sum(D_vector)
- 
- 
- vector_1 <- sapply(names(data), function (elm){
-   if (mutation_position == "start"){
-     no_events_branches = node_data[node_data["event_indicator"]==0,]
-   }
-   else if (mutation_position == "end"){
-     no_events_branches = node_data
-   }
-   else {
-     stop('Value of mutation_position parameter must be either "start" or "end"')
-   }
-   events_branches = node_data[node_data["event_indicator"]==1,]
-   apply_res <- apply( no_events_branches, 1,
-                        function(elm){ 
-                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
-                            tbeta1 <- as.numeric(elm["t_branch_end"])
-                            tbeta0 <- as.numeric(elm["t_branch_start"])
-                            if (tbeta0 == 0){logtbeta0 <- 0} # mutation can't die before it's birth
-                            else {logtbeta0 <- log(tbeta0)}
-                            if (tbeta1 == 0 || tbeta1 == 1){ 0 } # from equation 
-                            
-                            else {
-                              logtbeta1 <- log(tbeta1)
-                              logtbeta1*(tbeta1^x)*(1-(logtbeta0/logtbeta1)*((tbeta0/tbeta1)^x))
-                            }
-                          }  
-                          else { 0 }
-                        })
- }
-   
-   
-   
-   
-    if (mutation_position == "start"){
-      no_events_branches = node_data[node_data["event_indicator"]==0,]
-    }
-    else if (mutation_position == "end"){
-      no_events_branches = node_data
-    }
-    else {
-      stop('Value of mutation_position parameter must be either "start" or "end"')
-    }
-    events_branches = node_data[node_data["event_indicator"]==1,]
-  
+  #data is always a list of dataframes (node_datas)
 
-    D <- sum (node_data["event_indicator"])
+  mutation_position <- parms$mutation_position
+  rkvector <- parms$rkvector
+  data <- parms$data
+  if(is.null(rkvector)){
+    rkvector <- c(1)
+    names(rkvector) = names(data)
+  }
   
-    apply_res1 <- p_numerator_vector(no_events_branches, x)
   
-    apply_res2 <- p_denominator_vector(no_events_branches, x)
-  
-    apply_res3 <- p_talpha_vector(events_branches)
-  
- # }
-  
-  f2 <- D*x*sum( apply_res1 )/sum( apply_res2 ) - x*sum( apply_res3 ) - D
+  if (mutation_position != "start" && mutation_position != "end") {
+    stop('Value of mutation_position parameter must be either "start" or "end"')
+  }
+
+
+ D_vector <- compute_d_vector(data, rkvector)
+ D <- sum(D_vector)
+ 
+ 
+ numerator_vector <- sapply(names(data), function (name){
+   with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+      apply_res <- p_numerator_vector(no_events_branches, x)
+      apply_res*r
+  })
+ })
+
+ denominator_vector <- sapply(names(data), function (name){
+   with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+     apply_res <- p_denominator_vector(no_events_branches, x)
+     apply_res*r
+   })
+ })
+
+ talpha_vector <- sapply(names(data), function (name){
+   with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+     apply_res <- p_talpha_vector(events_branches, mutation_position)
+     apply_res*r
+   })
+ })
+
+   
+ f2 <- Dk*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - Dk
+
   
   if(draw){
     f2
@@ -167,11 +142,21 @@ p_derivative <- function (x, parms, draw=FALSE) {
   else {
     c(F1 = f2)
   }
-  
+
 }
 
 
 # series of subfunctions for computing p derivative (first and second)
+compute_d_vector <- function (data, rkvector){
+  D_vector <- sapply(names(data), function (elm){
+    node_data <- data[[elm]]
+    r <- rkvector[elm]
+    sum (node_data["event_indicator"]) * r
+  })
+  D_vector
+}
+
+
 p_numerator_vector <- function(no_events_branches, x){
   apply_res <- apply( no_events_branches, 1,
                        function(elm){ 
@@ -208,7 +193,7 @@ p_denominator_vector <-function(no_events_branches, x){
   apply_res 
 }
 
-p_talpha_vector <- function(events_branches){
+p_talpha_vector <- function(events_branches, mutation_position){
   apply_res <- apply( events_branches, 1,
                        function(elm){
                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), apply still tries to apply the function to.. header? the list is not empty: it contains the header
@@ -284,7 +269,7 @@ p_derivative_jacfunc <- function(x, parms){
                  })
   
   
-  alphas <- p_talpha_vector(events_branches)
+  alphas <- p_talpha_vector(events_branches, mutation_position)
   
   
   fdot <- D*x*(sum(udot)*sum(v) - sum(u)*sum(vdot))/(sum(v))^2 + D*sum(u)/sum(v)- sum(alphas) 
@@ -294,12 +279,15 @@ p_derivative_jacfunc <- function(x, parms){
 
 # plots partial derivative of loglikelihood function d(logL)/d(p) (weibull equation (2))  for given node_data 
 
-draw_p_derivative <- function(node_data, mutation_position = "end"){
+draw_p_derivative <- function(data, mutation_position = "end"){
   #node_data <- splitted[[anc_node]]
-  parms <- list(node_data = node_data, mutation_position)
+  anc_node <- names(data)
+  parms <- list(data = data, mutation_position = mutation_position)
   y <- sapply(seq(from = -5, to = 5, by = 0.05), function (elm){p_derivative(elm,parms, draw=TRUE)})
   plot( x = seq(from = -5, to = 5, by = 0.05), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = anc_node, ylim = c(-10, 5))
   axis(1, pos=0)
   axis(2, pos=0)
   abline(v=0, h=0)
 }
+
+
