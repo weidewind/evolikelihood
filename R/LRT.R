@@ -193,15 +193,5 @@ sink()
 
 
 ###
-parameters <- n2_prms 
-parameters <- data.frame(matrix(unlist(parameters), nrow=length(parameters), byrow=T),stringsAsFactors=FALSE)
-names(parameters) <- c("node", "lambda_exp_root", "lambda_root", "p_root", "p_precision" )
-parameters <- transform(parameters, lambda_exp_root = as.numeric(lambda_exp_root), lambda_root = as.numeric(lambda_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))
-filtered <-parameters[!is.na(parameters$p_precision) ,]
-filtered <-filtered[filtered$p_precision< 1e-5  ,]
-#filtered <-filtered[filtered$p_root< 30  ,]
-df <-filtered[,c("lambda_root", "p_root")]
-plot(df$p_root, df$lambda_root, main = "n2")
-plot(df$p_root, df$lambda_root, xlim = c(0, 1.5), ylim = c(0, 0.1), main = "n2")
-h1_kmeans <-kmeans(df, 3)
+
 

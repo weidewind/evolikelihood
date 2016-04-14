@@ -1,0 +1,17 @@
+{
+    "contents" : "## EM algorithm\n\n\n## prepare data\n\n\n## clusterize observed MLE parameters\n## construct rk vectors (1/0) for EM (based on cluster membership)\n## find initial a (and b) parameters for EM (maximisation)\n## compute initial weights based on (1/0) rk vectors (expectation)\n## compute initial rk vectors (expectation)\ninitialize_by_clustering <- function (){\n  \n}\n\n## alternative: choose random a (and b), \n## set equal weights for all categories,\n## compute initial rk vectors (expectation)\ninitialize_random <- function (){\n  \n}\n\n\n## initialization interface\ninitialize <- function (method = \"cluster\"){\n  if (method == \"cluster\") {\n    initialize_by_clustering()\n  }\n  else if (method == \"random\"){\n    initialize_random()\n  }\n  else {\n    stop (paste (\"Unknown initialization method \", method ))\n  }\n  \n}\n\n## EM: E - compute weights of each category and rk vectors\n##     M - given rk, compute new sets of parameters for each category\n\n\n\n\n\n\n\n\n\n\n### Procedures \nparameters <- n2_prms \nparameters <- data.frame(matrix(unlist(parameters), nrow=length(parameters), byrow=T),stringsAsFactors=FALSE)\nnames(parameters) <- c(\"node\", \"lambda_exp_root\", \"lambda_root\", \"p_root\", \"p_precision\" )\nparameters <- transform(parameters, lambda_exp_root = as.numeric(lambda_exp_root), lambda_root = as.numeric(lambda_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))\nfiltered <-parameters[!is.na(parameters$p_precision) ,]\nfiltered <-filtered[filtered$p_precision< 1e-5  ,]\n#filtered <-filtered[filtered$p_root< 30  ,]\ndf <-filtered[,c(\"lambda_root\", \"p_root\")]\nplot(df$p_root, df$lambda_root, main = \"n2\")\nplot(df$p_root, df$lambda_root, xlim = c(0, 1.5), ylim = c(0, 0.1), main = \"n2\")\nh1_kmeans <-kmeans(df, 3)",
+    "created" : 1460551453315.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "292526153",
+    "id" : "C5603543",
+    "lastKnownWriteTime" : 1460620327,
+    "path" : "C:/Users/weidewind/workspace/evolikelihood/R/EM.R",
+    "project_path" : "R/EM.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

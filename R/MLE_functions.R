@@ -133,8 +133,8 @@ p_derivative <- function (x, parms, draw=FALSE) {
  })
 
    
- f2 <- Dk*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - Dk
-
+ #f2 <- Dk*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - Dk
+ f2 <- Dk*sum(numerator_vector)/sum(denominator_vector) - sum(talpha_vector) - Dk/x
   
   if(draw){
     f2
@@ -290,4 +290,17 @@ draw_p_derivative <- function(data, mutation_position = "end"){
   abline(v=0, h=0)
 }
 
+draw_lambda_derivative <- function(data, mutation_position = "end"){
+  #node_data <- splitted[[anc_node]]
+  data <- splitted["138.INTNODE2416"]
+  anc_node <- names(data)
+ 
+  y <- sapply(seq(from = -5, to = 20, by = 0.05), function (elm){
+    parms <- list(data = data, mutation_position = mutation_position, p=elm)
+    lambda_derivative_weib(parms)})
+  plot( x = seq(from = -5, to = 20, by = 0.05), y, type = 'l', xlab = "p", ylab = "lambda", axes=F, xaxt="n", yaxt="n", main = anc_node, ylim = c(-0.01, 0.01), xlim = c(-1, 20))
+  axis(1, pos=0)
+  axis(2, pos=0)
+  abline(v=0, h=0)
+}
 

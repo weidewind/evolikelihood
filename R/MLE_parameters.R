@@ -8,23 +8,23 @@ library("rbenchmark")
 find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, verbose=TRUE){
   # data is a list of dataframes, node_data is a dataframe
 
-  if (length(data) = 1){
-    mode = "single"
-    node_data = data[[1]]
-    rkvector = c(1)
-    names(rkvector) = names(node_data)
+  if (length(data) == 1){
+    mode <- "single"
+    node_data <- data[[1]]
+    rkvector <- c(1)
+    names(rkvector) <- names(data)
     if (verbose){
       print ("Running in single mode")
     }
   }
   else {
-    mode = "group"
+    mode <- "group"
     if (verbose){
       print ("Running in group mode")
     }
-    if(is.null(rkvector){
+    if(is.null(rkvector)){
       stop ("In group mode argument rkvector must be provided")
-    })
+    }
   }
   
   
@@ -63,7 +63,9 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, ve
         lambda_root = NA, lambda_exp_root = lambda_exp_root)
     }
     else if(is.na(solution_p$estim.precis)){
-      if (verbose){print(paste("estimated precision for p is Na, won't try to estimate lambda"))}
+      if (verbose){
+        print(paste("p_root is ",solution_p$root, " but estimated precision for p is Na, won't try to estimate lambda"))
+      }
       c(p_root = solution_p$root, p_precision = NA,
         lambda_root = NA, lambda_exp_root = lambda_exp_root)
     }
@@ -112,9 +114,14 @@ prot <- "h1"
 prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 
+
 h1_prms2 <-parameters(splitted, fishy = TRUE, filter= FALSE)
 h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
 h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
+
+sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/wtf_with_precision_h1")
+h1_wtf_precision <-parameters(splitted, fishy = TRUE, filter= FALSE, verbose = TRUE)
+sink()
 
 snbenchmark(parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE), parameters(splitted, fishy = TRUE, filter= FALSE),  replications = 1)
 
