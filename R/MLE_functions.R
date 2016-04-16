@@ -207,7 +207,8 @@ p_talpha_vector <- function(events_branches, mutation_position){
                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), apply still tries to apply the function to.. header? the list is not empty: it contains the header
                            if (mutation_position == "start"){talpha <- as.numeric(elm["t_branch_start"])}
                            else if (mutation_position == "end"){talpha <- as.numeric(elm["t_branch_end"])}
-                           else {stop('Value of mutation_position parameter must be either "start" or "end"')}
+                           else if (mutation_position == "middle"){talpha <- as.numeric(elm["t_branch_start"])} #since events_branches already have start = middle of the branch
+                           else {stop('Value of mutation_position parameter must be either "start" or "end" or "middle"')}
                            
                            if (talpha == 0){logtalpha = 0}
                            else {logtalpha = log(talpha)}
@@ -312,19 +313,19 @@ draw_lambda_derivative <- function(data, mutation_position = "end"){
   abline(v=0, h=0)
 }
 
-name <-"210.INTNODE2434"
+name <-"36.INTNODE1224"
 node_data <- splitted[name]
 fishy <- TRUE
-mutation_position = "start"
-draw_surface <-function(node_data, mutation_position){
+mutation_position = "middle"
+
 p <- seq(from = 0.025, to = 250, by = 1)
-lambda <- sapply(p, function (elm){
-  parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
-  lambda_derivative_weib(parms)})
+#lambda <- sapply(p, function (elm){
+#  parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
+#  lambda_derivative_weib(parms)})
 lnlikelihood <- sapply(p, function (elm){
       parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
       lambda <- lambda_derivative_weib(parms)
-      lnl <- lnlikelihood_weibull(node_data, lambda, elm, fishy = fishy, mutation_position = mutation_position)
+      lnl <- lnlikelihood_weibull(node_data, lambda, elm, fishy = fishy)
       lnl["lnL"]
   }
   )
@@ -332,6 +333,6 @@ lnlikelihood <- sapply(p, function (elm){
 #plot_ly(x = p, y = lambda, z = lnlikelihood, type = "scatter3D")
 #scatterplot3d(p, lambda, lnlikelihood)
 plot(p, lnlikelihood, main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
-draw_p_derivative(node_data, mutation_position)
-}
+draw_p_derivative(node_data,  mutation_position= mutation_position)
+
 

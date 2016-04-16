@@ -41,18 +41,18 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, ve
     
     # if p root is negative, search for positive root
     p = -1
-    init = 1
+    init = 0.2
     count = 1
     
-    while(!is.na(p) && p < 0 && count < 6){
+    while(!is.na(p) && p < 0 && count < 20){
       if (jack){
         solution_p <- multiroot(f = p_derivative, start = c(init), jacfunc = p_derivative_jacfunc, jactype = "fullusr", parms = pars)
       }
       else {
-        solution_p <- multiroot(f = p_derivative, start = c(init), parms = pars)
+        solution_p <- multiroot(f = p_derivative, start = c(init), parms = pars, verbose = FALSE)
       }
       p <-solution_p$root
-      init <- init + 3
+      init <- init + 1
       count <- count + 1
     }
     
@@ -92,7 +92,7 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, ve
 
 ## computes parameters for all nodes, outputs only complete sets of parameters
 #parameters <-function(prot, tag, fishy = FALSE){
-parameters <-function(data, mutation_position = "end", fishy = FALSE, filter = TRUE, jack = FALSE, verbose = FALSE){
+parameters <-function(data, mutation_position = "end",  filter = TRUE, jack = FALSE, verbose = FALSE){
   
   ps <- lapply (names(data), function(elm, mut_pos){
     mutation_position <- mut_pos
@@ -119,11 +119,13 @@ h1_prms2 <-parameters(splitted, fishy = TRUE, filter= FALSE)
 h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
 h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
 
-sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/wtf_with_precision_h1")
-h1_wtf_precision <-parameters(splitted, fishy = TRUE, filter= FALSE, verbose = TRUE)
+sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/likelihood_games_h1")
+h1_likelihood_games <-parameters(splitted, mutation_position = "middle", filter= FALSE, verbose = TRUE)
+sink()
+lrt_procedure(data = splitted, prot = prot, tag = "likelihood_games", fishy=TRUE, parameters = h1_likelihood_games)
 sink()
 
-snbenchmark(parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE), parameters(splitted, fishy = TRUE, filter= FALSE),  replications = 1)
+benchmark(parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE), parameters(splitted, fishy = TRUE, filter= FALSE),  replications = 1)
 
 
 # how much does it take to compute all jackobians?
