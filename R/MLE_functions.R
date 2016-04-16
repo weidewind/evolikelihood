@@ -313,6 +313,9 @@ draw_lambda_derivative <- function(data, mutation_position = "end"){
   abline(v=0, h=0)
 }
 
+
+
+unnamed <- function (){
 name <-"36.INTNODE1224"
 node_data <- splitted[name]
 fishy <- TRUE
@@ -329,10 +332,8 @@ lnlikelihood <- sapply(p, function (elm){
       lnl["lnL"]
   }
   )
-#surf <- cbind(p, lambda, lnlikelihood )
-#plot_ly(x = p, y = lambda, z = lnlikelihood, type = "scatter3D")
-#scatterplot3d(p, lambda, lnlikelihood)
+
 plot(p, lnlikelihood, main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
 draw_p_derivative(node_data,  mutation_position= mutation_position)
-
+}
 
