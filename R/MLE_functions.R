@@ -1,3 +1,4 @@
+install.packages("plotly")
 ## equations for computing maximum likelihood estimators
 
 
@@ -12,9 +13,6 @@ lambda_derivative_exp <- function(parms){
   }
   mutation_position <- parms$mutation_position
   
-  if (mutation_position != "start" && mutation_position != "end") {
-    stop('Value of mutation_position parameter must be either "start" or "end"')
-  }
   
   D_vector <- compute_d_vector(data, rkvector)
   D <- sum(D_vector)
@@ -50,9 +48,7 @@ lambda_derivative_weib <- function (parms) {
   p <- parms$p
   mutation_position <- parms$mutation_position
   
-  if (mutation_position != "start" && mutation_position != "end") {
-    stop('Value of mutation_position parameter must be either "start" or "end"')
-  }
+
   
   D_vector <- compute_d_vector(data, rkvector)
   D <- sum(D_vector)
@@ -72,13 +68,29 @@ lambda_derivative_weib <- function (parms) {
 supplier <- function (data,  rkvector, elm, mutation_position){
   node_data <- data[[elm]]
   r <- rkvector[elm]
+  if (mutation_position != "start" && mutation_position != "end" && mutation_position != "middle") {
+    stop('Value of mutation_position parameter must be either "start" or "end" or "middle"')
+  }
   if (mutation_position == "start"){
     no_events_branches = node_data[node_data["event_indicator"]==0,]
   }
   else if (mutation_position == "end"){
     no_events_branches = node_data
   }
-  events_branches = node_data[node_data["event_indicator"]==1,]
+  else if (mutation_position == "middle"){
+    no_events_branches = node_data[node_data["event_indicator"]==0,]
+    first_halves = node_data[node_data["event_indicator"]==1,]
+    first_halves[,"t_branch_end"] <- ( first_halves[,"t_branch_end"]+ first_halves[,"t_branch_start"])/2
+    no_events_branches = rbind(no_events_branches, first_halves)
+  }
+  if (mutation_position == "middle"){
+    second_halves = node_data[node_data["event_indicator"]==1,]
+    second_halves[,"t_branch_start"] <- ( second_halves[,"t_branch_end"]+ second_halves[,"t_branch_start"])/2
+    events_branches = second_halves
+  }
+  else {
+    events_branches = node_data[node_data["event_indicator"]==1,]
+  }
   
   list(r = r, no_events_branches = no_events_branches, events_branches = events_branches)
 }
@@ -101,10 +113,6 @@ p_derivative <- function (x, parms, draw=FALSE) {
     names(rkvector) = names(data)
   }
   
-  
-  if (mutation_position != "start" && mutation_position != "end") {
-    stop('Value of mutation_position parameter must be either "start" or "end"')
-  }
 
 
  D_vector <- compute_d_vector(data, rkvector)
@@ -133,9 +141,9 @@ p_derivative <- function (x, parms, draw=FALSE) {
  })
 
    
- #f2 <- Dk*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - Dk
- f2 <- Dk*sum(numerator_vector)/sum(denominator_vector) - sum(talpha_vector) - Dk/x
-  
+ f2 <- D*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - D
+ #f2 <- Dk*sum(numerator_vector)/sum(denominator_vector) - sum(talpha_vector) - Dk/x
+  print (f2)
   if(draw){
     f2
   }
@@ -283,8 +291,8 @@ draw_p_derivative <- function(data, mutation_position = "end"){
   #node_data <- splitted[[anc_node]]
   anc_node <- names(data)
   parms <- list(data = data, mutation_position = mutation_position)
-  y <- sapply(seq(from = -5, to = 5, by = 0.05), function (elm){p_derivative(elm,parms, draw=TRUE)})
-  plot( x = seq(from = -5, to = 5, by = 0.05), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = anc_node, ylim = c(-10, 5))
+  y <- sapply(seq(from = -5, to = 300, by = 0.5), function (elm){p_derivative(elm,parms, draw=TRUE)})
+  plot( x = seq(from = -5, to = 300, by = 0.5), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = paste(c(anc_node, " mut pos ", mutation_position)), ylim = c(-10, 5))
   axis(1, pos=0)
   axis(2, pos=0)
   abline(v=0, h=0)
@@ -292,7 +300,7 @@ draw_p_derivative <- function(data, mutation_position = "end"){
 
 draw_lambda_derivative <- function(data, mutation_position = "end"){
   #node_data <- splitted[[anc_node]]
-  data <- splitted["138.INTNODE2416"]
+  #node_data <- splitted["138.INTNODE2416"]
   anc_node <- names(data)
  
   y <- sapply(seq(from = -5, to = 20, by = 0.05), function (elm){
@@ -302,5 +310,28 @@ draw_lambda_derivative <- function(data, mutation_position = "end"){
   axis(1, pos=0)
   axis(2, pos=0)
   abline(v=0, h=0)
+}
+
+name <-"210.INTNODE2434"
+node_data <- splitted[name]
+fishy <- TRUE
+mutation_position = "start"
+draw_surface <-function(node_data, mutation_position){
+p <- seq(from = 0.025, to = 250, by = 1)
+lambda <- sapply(p, function (elm){
+  parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
+  lambda_derivative_weib(parms)})
+lnlikelihood <- sapply(p, function (elm){
+      parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
+      lambda <- lambda_derivative_weib(parms)
+      lnl <- lnlikelihood_weibull(node_data, lambda, elm, fishy = fishy, mutation_position = mutation_position)
+      lnl["lnL"]
+  }
+  )
+#surf <- cbind(p, lambda, lnlikelihood )
+#plot_ly(x = p, y = lambda, z = lnlikelihood, type = "scatter3D")
+#scatterplot3d(p, lambda, lnlikelihood)
+plot(p, lnlikelihood, main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
+draw_p_derivative(node_data, mutation_position)
 }
 

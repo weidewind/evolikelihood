@@ -14,7 +14,8 @@ lnlikelihood_exp <-function(node_data, lambda, fishy = FALSE){
                            if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
                              talpha1 <- as.numeric(elm["t_branch_end"])
                              talpha0 <- as.numeric(elm["t_branch_start"])
-                             log(lambda)+log(talpha1-talpha0)
+                             talpha_middle <- (talpha1+talpha0)/2
+                             log(lambda)+log(talpha1-talpha_middle) #changed
                            }  
                            else { 0 }
                          })
@@ -39,9 +40,28 @@ lnlikelihood_exp <-function(node_data, lambda, fishy = FALSE){
                             tbeta0 -  tbeta1
                           }  
                           else { 0 }
+     
+                          })
+  #added
+  if(fishy){
+      apply_res3 <-  apply( alpha_branches, 1,
+                        function(elm){ 
+                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
+                            talpha1 <- as.numeric(elm["t_branch_end"])
+                            talpha0 <- as.numeric(elm["t_branch_start"])
+                            talpha_middle <- (talpha1+talpha0)/2
+                            talpha0 -  talpha_middle
+                          }  
+                          else { 0 }
                         })
+  }
   
-  lnL <-sum(apply_res1) + lambda*sum(apply_res2)
+  if (fishy){
+      lnL <-sum(apply_res1) + lambda*(sum(apply_res2)+sum(apply_res3))
+  }
+  else{
+      lnL <-sum(apply_res1) + lambda*sum(apply_res2)
+  }
   c(lnL = lnL, AIC = aic(lnL, 1))
 }
 
@@ -62,7 +82,9 @@ lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
                              talpha1 <- as.numeric(elm["t_branch_end"])
                              talpha0 <- as.numeric(elm["t_branch_start"])
                              talpha_middle <- (talpha1+talpha0)/2
-                             log(p) + p*log(lambda)+(p-1)*log(talpha_middle)+log(talpha1-talpha0)
+
+                             #log(p) + p*log(lambda)+(p-1)*log( talpha_middle)+log(talpha1-talpha0)
+                             log(p) + p*log(lambda)+(p-1)*log( talpha_middle)+log(talpha1-talpha_middle)
                            }  
                            else { 0 }
                          })
@@ -89,8 +111,28 @@ lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
                           }  
                           else { 0 }
                         })
+  ## added
+  if (fishy){
+      apply_res3 <-  apply( alpha_branches, 1,
+                        function(elm){ 
+                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
+                            talpha1 <- as.numeric(elm["t_branch_end"])
+                            talpha0 <- as.numeric(elm["t_branch_start"])
+                            talpha_middle <- (talpha1+talpha0)/2
+                            (talpha_middle^p)*( ((talpha0/talpha_middle)^p) - 1 )  
+                          }  
+                          else { 0 }
+                        })
+  }
   
-  lnL <-sum(apply_res1) + (lambda^p)*sum(apply_res2)
+  
+  if (fishy){
+      lnL <-sum(apply_res1) + (lambda^p)*(sum(apply_res2)+sum(apply_res3))
+  }
+  else {
+      lnL <-sum(apply_res1) + (lambda^p)*sum(apply_res2)
+  }
+
   c(lnL = lnL, AIC = aic(lnL, 2))
 }
 
@@ -128,9 +170,9 @@ lrt <- function (node_data, lambda_exp, lambda_weib, p, fishy = FALSE, verbose =
 ## files like "h1_single_root_31_03_truelambda_fishy" were printed here
 
 lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  mutation_position = "end", parameters = NULL){
-  if (!is.null(parameters)){
-    warning("Parameters are defined, therefore mutation_position will be ignored")
-  }
+ # if (!is.null(parameters)){
+ #   warning("Parameters are defined, therefore mutation_position will be ignored")
+  #}
   sink(file = paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_single_root_", tag), collapse=""), append = FALSE, type = c("output", "message"),
        split = FALSE)
   
