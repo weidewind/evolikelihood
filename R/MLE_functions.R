@@ -1,4 +1,5 @@
 install.packages("plotly")
+library(scatterplot3d)
 ## equations for computing maximum likelihood estimators
 
 
@@ -142,8 +143,23 @@ p_derivative <- function (x, parms, draw=FALSE) {
 
    
  f2 <- D*x*sum(numerator_vector)/sum(denominator_vector) - x*sum(talpha_vector) - D
+# if (is.nan(f2) || is.na(f2)){
+#   print ("Achtung!")
+#   print (x)
+#   print (sum(numerator_vector))
+#   print (sum(denominator_vector))
+#   print(sum(talpha_vector))
+# }
+# else {
+#   print ("ok")
+#   print (x)
+#   print (sum(numerator_vector))
+#   print (sum(denominator_vector))
+#   print(sum(talpha_vector))
+#   print (f2)
+# }
  #f2 <- Dk*sum(numerator_vector)/sum(denominator_vector) - sum(talpha_vector) - Dk/x
-  print (f2)
+  #print (f2)
   if(draw){
     f2
   }
@@ -288,12 +304,12 @@ p_derivative_jacfunc <- function(x, parms){
 
 # plots partial derivative of loglikelihood function d(logL)/d(p) (weibull equation (2))  for given node_data 
 
-draw_p_derivative <- function(data, mutation_position = "end"){
+draw_p_derivative <- function(data, mutation_position = "end", to = 20, by = 0.01){
   #node_data <- splitted[[anc_node]]
   anc_node <- names(data)
   parms <- list(data = data, mutation_position = mutation_position)
-  y <- sapply(seq(from = -5, to = 300, by = 0.5), function (elm){p_derivative(elm,parms, draw=TRUE)})
-  plot( x = seq(from = -5, to = 300, by = 0.5), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = paste(c(anc_node, " mut pos ", mutation_position)), ylim = c(-10, 5))
+  y <- sapply(seq(from = -5, to = to, by = by), function (elm){p_derivative(elm,parms, draw=TRUE)})
+  plot( x = seq(from = -5, to = to, by = by), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = paste(c(anc_node, " mut pos ", mutation_position)), ylim = c(-10, 5))
   axis(1, pos=0)
   axis(2, pos=0)
   abline(v=0, h=0)
@@ -314,18 +330,14 @@ draw_lambda_derivative <- function(data, mutation_position = "end"){
 }
 
 
+#draw_lnlikelihood(splitted, "169.INTNODE1233") 165  node  INTNODE1457 ! 165  node  INTNODE1457 h1 238   INTNODE1364 site  169  node  INTNODE2065
+draw_lnlikelihood <- function (data, nodename, to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE){
+#data <- splitted
+  name <-nodename
+  node_data <- data[name]
 
-unnamed <- function (){
-name <-"36.INTNODE1224"
-node_data <- splitted[name]
-fishy <- TRUE
-mutation_position = "middle"
-
-p <- seq(from = 0.025, to = 250, by = 1)
-#lambda <- sapply(p, function (elm){
-#  parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
-#  lambda_derivative_weib(parms)})
-lnlikelihood <- sapply(p, function (elm){
+  p <- seq(from = 0, to = to, by = by)
+  lnlikelihood <- sapply(p, function (elm){
       parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
       lambda <- lambda_derivative_weib(parms)
       lnl <- lnlikelihood_weibull(node_data, lambda, elm, fishy = fishy)
@@ -333,7 +345,44 @@ lnlikelihood <- sapply(p, function (elm){
   }
   )
 
-plot(p, lnlikelihood, main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
-draw_p_derivative(node_data,  mutation_position= mutation_position)
+  plot(p, lnlikelihood, ylab = "lnlikelihood", xlab ="p",  type = 'l', main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
+  draw_p_derivative(node_data,  mutation_position= mutation_position, to=to, by=by)
+}
+
+draw_hazard <-function(data, nodename, to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE){
+  data=splitted
+  nodename = "78.INTNODE4232"
+  name <-nodename
+  node_data <- data[name]
+  
+  p <- seq(from = 0, to = 30, by = 0.5)
+  t <- seq(from = 0, to = 400, by = 5)
+ # lambda <- sapply(p, function (elm){
+  #  parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
+ #   lambda <- lambda_derivative_weib(parms)
+ # }
+ # )
+  hazard <- sapply(t, function (time){
+    sapply(p, function (elm){
+      parms <- list(data = node_data, mutation_position = mutation_position, p=elm)
+      lambda <- lambda_derivative_weib(parms)
+      elm*(lambda^elm)*(time^(elm-1))
+    })
+  })
+ hazard_time <-sapply(t, function (time){
+
+     parms <- list(data = node_data, mutation_position = mutation_position, p=30)
+     lambda <- lambda_derivative_weib(parms)
+     30*(lambda^30)*(time^(30-1))
+
+ })
+ # scatterplot3d()
+  persp(p, t, hazard, zlim=c(0,1),phi = 45, theta = 45,
+        xlab = "p", ylab = "t",
+        main = "hazard"
+  )
+ 
+ plot(t, hazard_time, ylab = "hazard", xlab ="t",  type = 'l', ylim = c(0, 100), main = paste(c(name, " fishy ", fishy, " mut pos ", mutation_position)))
+ # draw_p_derivative(node_data,  mutation_position= mutation_position, to=to, by=by)
 }
 

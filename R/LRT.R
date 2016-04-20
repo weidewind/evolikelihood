@@ -85,6 +85,8 @@ lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
 
                              #log(p) + p*log(lambda)+(p-1)*log( talpha_middle)+log(talpha1-talpha0)
                              log(p) + p*log(lambda)+(p-1)*log( talpha_middle)+log(talpha1-talpha_middle)
+                             #print ("p to die")
+                             #print (log(p) + p*log(lambda)+(p-1)*log( talpha_middle)+log(talpha1-talpha_middle))
                            }  
                            else { 0 }
                          })
@@ -107,7 +109,12 @@ lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
                           if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
                             tbeta1 <- as.numeric(elm["t_branch_end"])
                             tbeta0 <- as.numeric(elm["t_branch_start"])
-                            (tbeta1^p)*( ((tbeta0/tbeta1)^p) - 1 )  
+                            if (tbeta1 == 0){0}
+                            else {
+                              (tbeta1^p)*( ((tbeta0/tbeta1)^p) - 1 )  
+                            }
+                            #print ("p to survive on beta")
+                            #print ((tbeta1^p)*( ((tbeta0/tbeta1)^p) - 1 ) )
                           }  
                           else { 0 }
                         })
@@ -119,6 +126,8 @@ lnlikelihood_weibull <-function(node_data, lambda, p, fishy = FALSE){
                             talpha1 <- as.numeric(elm["t_branch_end"])
                             talpha0 <- as.numeric(elm["t_branch_start"])
                             talpha_middle <- (talpha1+talpha0)/2
+                            #print ("p to survive on alpha")
+                            #print ((talpha_middle^p)*( ((talpha0/talpha_middle)^p) - 1 ))
                             (talpha_middle^p)*( ((talpha0/talpha_middle)^p) - 1 )  
                           }  
                           else { 0 }
@@ -169,11 +178,11 @@ lrt <- function (node_data, lambda_exp, lambda_weib, p, fishy = FALSE, verbose =
 ## outputs parameters and lr for all nodes
 ## files like "h1_single_root_31_03_truelambda_fishy" were printed here
 
-lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  mutation_position = "end", parameters = NULL){
+lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  mutation_position = "end", pack = "rootsolve", parameters = NULL){
  # if (!is.null(parameters)){
  #   warning("Parameters are defined, therefore mutation_position will be ignored")
   #}
-  sink(file = paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_single_root_", tag), collapse=""), append = FALSE, type = c("output", "message"),
+  sink(file = paste(c(getwd(), "/output/" ,prot,"_single_root_", tag), collapse=""), append = FALSE, type = c("output", "message"),
        split = FALSE)
   
   if (!is.null(parameters)){
@@ -186,7 +195,7 @@ lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  muta
     mutation_position <- mutation_position
     node_data <- data[elm]
     if (is.null(parameters)){
-      node_roots <- as.list(find_single_root(node_data, mutation_position))
+      node_roots <- as.list(find_single_root(node_data, mutation_position, pack=pack))
     }
     else {
       node_roots <- parameters[parameters$node == elm,]
@@ -208,32 +217,67 @@ lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  muta
   lratios
 }
 
-prot <- "h1"
-prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-h1_prms <-parameters(splitted, fishy = TRUE, filter= FALSE)
-lrt_procedure(data = splitted, prot = prot, tag = "without_negative_roots_step_3", fishy=TRUE, parameters = h1_prms)
-sink()
-prot <- "h3"
-prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-h3_prms <-parameters(splitted, fishy = TRUE, filter= FALSE)
-lrt_procedure(data = splitted, prot = prot, tag = "without_negative_roots", fishy=TRUE, parameters = h3_prms)
-sink()
-prot <- "n1"
-prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-n1_prms <-parameters(splitted, fishy = TRUE, filter= FALSE)
-lrt_procedure(data = splitted, prot = prot, tag = "without_negative_roots", fishy=TRUE, parameters = n1_prms)
-sink()
-prot <- "n2"
-prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-n2_prms <-parameters(splitted, fishy = TRUE, filter= FALSE)
-lrt_procedure(data = splitted, prot = prot, tag = "without_negative_roots", fishy=TRUE, parameters = n2_prms)
-sink()
 
+## verbose mode also prints a file with parameters for all nodes
+
+lrt_all <- function(mutation_position = "middle", fishy = TRUE,  pack = "rootsolve", tag = "defaulttag", verbose = TRUE){
+  prots <- c("h1", "h3", "n1", "n2")
+  for (pr in prots){
+    prot <- pr
+    prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+    splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
+    if (verbose){
+      sink(file = paste(c(getwd(), "/output/" ,prot,"_all_parms_", tag), collapse=""))
+    }
+    prms <-parameters(splitted,  mutation_position = mutation_position,  verbose = verbose, pack = pack, filter= FALSE)
+    if (verbose){sink()}
+    lrt_procedure(data = splitted, prot = prot, tag = tag, fishy=fishy, parameters = prms)
+    sink()
+  }
+}
 
 ###
+## tests and procedures
 
 
+lrt_all(mutation_position = "middle", fishy = TRUE, tag = "middle_search", pack = "rootsolve", verbose = TRUE)
+
+
+benchmark(parameters(splitted,  jack = FALSE, pack = "nleqslv", filter= FALSE), parameters(splitted,  jack = FALSE, pack = "rootsolve", filter= FALSE),  replications = 1)
+
+##check that there are no zero-length branches with mutations
+no_muts_on_zero_branches <-function(prot){
+  prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+  nullength <- prot_data[prot_data["event_indicator"] == 1,]
+  nullength <-nullength[nullength["t_branch_end"]-nullength["t_branch_start"] == 0,]
+  if (nrow(nullength) == 0){TRUE}
+  else {FALSE}
+}
+
+# how much does it take to compute all jackobians?
+test_jack <- function(x, splitted){
+  ps <- lapply (names(splitted), function(elm){
+    node_data <- splitted[[elm]]
+    parms <- list(node_data = node_data, mutation_position = "end")
+    node_jacks <- p_derivative_jacfunc(x, parms)
+  })
+}
+
+prot <- "h1"
+prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
+#node_data <- splitted["151.INTNODE4195"]
+#node_roots <- find_single_root(node_data, mutation_position = "middle", jack = FALSE, pack = "nleqslv", verbose = TRUE)
+
+#draw_hazard <-function(data=splitted, nodename = "78.NTNODE4232", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
+draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
+draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
+#h1_prms2 <-parameters(splitted, fishy = TRUE, filter= FALSE)
+#h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
+#h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
+
+#sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/likelihood_games_h1")
+#h1_likelihood_games <-parameters(splitted, mutation_position = "middle", filter= FALSE, verbose = TRUE)
+#sink()
+#lrt_procedure(data = splitted, prot = prot, tag = "likelihood_games", fishy=TRUE, parameters = h1_likelihood_games)
+#sink()

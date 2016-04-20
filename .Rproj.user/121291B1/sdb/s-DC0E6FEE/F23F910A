@@ -1,0 +1,16 @@
+{
+    "contents" : "inpath <- paste(c(getwd(), \"/input/\"),collapse= \"\")\n\nprot <- \"h3\"\nprot_data <-  read.csv(paste(c(inpath, prot,\"_for_LRT.csv\"), collapse=\"\"),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\n\n\n\ntest_supplier <- function() {\n  nodename <-  \"211.INTNODE1224\" \n  sup <- supplier(data=splitted,  rkvector=c(\"211.INTNODE1224\" = 1), elm = nodename, mutation_position = \"middle\")\n  checkTrue(sup$r == 1)\n  checkEquals(nrow(sup$no_events_branches), nrow(splitted[[nodename]]))\n  checkEquals(nrow(sup$events_branches), 1)\n  checkEquals(sup$events_branches[\"t_branch_start\"][[1]], 15)\n  checkEquals(nrow(sup$no_events_branches) + nrow(sup$events_branches), 5)\n  #total subtree length must stay the same\n  checkEquals(sum (sup$events_branches[\"t_branch_end\"] - sup$events_branches[\"t_branch_start\"]) + sum (sup$no_events_branches[\"t_branch_end\"] - sup$no_events_branches[\"t_branch_start\"]), \n            sum(splitted[[nodename]][\"t_branch_end\"] - splitted[[nodename]][\"t_branch_start\"]))\n\n#list(r = 1, no_events_branches = no_events_branches, events_branches = events_branches)\n   \n#isTRUE(all.equal(target, current, ...,\n#          check.attributes = TRUE, use.names = TRUE)) # for checking equality of two lists\n\n#   checkEquals(divideBy(4, 2), 2)\n#    checkTrue(is.na(divideBy(4, 0)))\n#    checkEqualsNumeric(divideBy(4, 1.2345), 3.24, tolerance=1.0e-4)\n}",
+    "created" : 1460975074793.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2173322000",
+    "id" : "F23F910A",
+    "lastKnownWriteTime" : 1460989635,
+    "path" : "C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R",
+    "project_path" : "R/tests/MLE_functions_test.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

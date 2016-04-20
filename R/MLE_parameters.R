@@ -2,12 +2,19 @@ install.packages("rootSolve")
 library("rootSolve")
 install.packages("rbenchmark")
 library("rbenchmark")
+install.packages("nleqslv")
+library("nleqslv")
 
 
 ## multiroot, finds only one root 
-find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, verbose=TRUE){
+find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pack = "rootsolve", verbose=TRUE){
+  # pack nleqslv
   # data is a list of dataframes, node_data is a dataframe
 
+  if (pack != "rootsolve" && pack != "nleqslv"){
+      stop ("Incorrect argument pack: must be either 'rootsolve' or 'nleqslv'")
+  }
+  
   if (length(data) == 1){
     mode <- "single"
     node_data <- data[[1]]
@@ -44,37 +51,61 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, ve
     init = 0.2
     count = 1
     
-    while(!is.na(p) && p < 0 && count < 20){
-      if (jack){
-        solution_p <- multiroot(f = p_derivative, start = c(init), jacfunc = p_derivative_jacfunc, jactype = "fullusr", parms = pars)
+    while(  (!is.na(p) && (p < 0  || (!is.null(solution_p$termcd) && solution_p$termcd > 2)|| (!is.null(solution_p$estim.precis) && is.nan(solution_p$estim.precis))) ) && count < 20){
+      print (paste(c("staring with p = ", init)))
+      if (pack == "rootsolve"){
+        if (jack){
+          solution_p <- multiroot(f = p_derivative, start = c(init), jacfunc = p_derivative_jacfunc, jactype = "fullusr", parms = pars)
+        }
+        else {
+          solution_p <- multiroot(f = p_derivative, start = c(init), parms = pars)
+        }
+        p <-solution_p$root
       }
-      else {
-        solution_p <- multiroot(f = p_derivative, start = c(init), parms = pars, verbose = FALSE)
+      else if (pack == "nleqslv"){
+        #if (jack){
+        #  solution_p <- multiroot(f = p_derivative, start = c(init), jacfunc = p_derivative_jacfunc, jactype = "fullusr", parms = pars)
+        #}
+       # else {
+          solution_p <- nleqslv(fn = p_derivative, x = c(init), parms = pars)
+         # print (solution_p)
+        #}
+        p <-solution_p$x
       }
-      p <-solution_p$root
+      
       init <- init + 1
       count <- count + 1
     }
     
-    if (verbose){print(paste("precision_p ", solution_p$estim.precis) )}
-    if(is.na(solution_p$root)){
+    if (pack == "rootsolve"){
+      precision <- solution_p$estim.precis
+      p_root <- solution_p$root
+    }
+    else {
+      precision <- solution_p$fvec
+      p_root <- solution_p$x
+    }
+    
+    
+    if (verbose){print(paste("precision_p ", precision) )}
+    if(is.na(p_root)){
       print(paste("no p_roots found"))
       c(p_root = NA, p_precision = NA,
         lambda_root = NA, lambda_exp_root = lambda_exp_root)
     }
-    else if(is.na(solution_p$estim.precis)){
+    else if(is.na(precision)){
       if (verbose){
-        print(paste("p_root is ",solution_p$root, " but estimated precision for p is Na, won't try to estimate lambda"))
+        print(paste("p_root is ",p_root, " but estimated precision for p is Na, won't try to estimate lambda"))
       }
-      c(p_root = solution_p$root, p_precision = NA,
+      c(p_root = p_root, p_precision = NA,
         lambda_root = NA, lambda_exp_root = lambda_exp_root)
     }
     
     else {
-      pars <- list(p = solution_p$root, data = data, rkvector, mutation_position = mutation_position)
+      pars <- list(p = p_root, data = data, rkvector, mutation_position = mutation_position)
       lambda_root <- lambda_derivative_weib(pars)
-      if (verbose){ print (c(p_root = solution_p$root, lambda_root = lambda_root))}
-      c(p_root = solution_p$root, p_precision = solution_p$estim.precis,
+      if (verbose){ print (c(p_root = p_root, lambda_root = lambda_root))}
+      c(p_root = p_root, p_precision = precision,
         lambda_root = lambda_root,
         lambda_exp_root = lambda_exp_root)
     }
@@ -92,12 +123,12 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, ve
 
 ## computes parameters for all nodes, outputs only complete sets of parameters
 #parameters <-function(prot, tag, fishy = FALSE){
-parameters <-function(data, mutation_position = "end",  filter = TRUE, jack = FALSE, verbose = FALSE){
+parameters <-function(data, mutation_position = "end", rkvector, filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE){
   
   ps <- lapply (names(data), function(elm, mut_pos){
     mutation_position <- mut_pos
     node_data <- data[elm]
-    node_roots <- find_single_root(node_data, mutation_position, jack = jack, verbose = verbose)
+    node_roots <- find_single_root(node_data, mutation_position, rkvector, jack = jack, pack = pack, verbose = verbose)
     if (!filter || filter && !is.na(node_roots) &&  all(is.finite(node_roots)) && node_roots["p_precision"] < 1e-5 ) {
         c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"])
     }
@@ -109,66 +140,6 @@ parameters <-function(data, mutation_position = "end",  filter = TRUE, jack = FA
   }
   ps
 }
-
-prot <- "h1"
-prot_data <-  read.csv(paste(c("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/",prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-
-
-h1_prms2 <-parameters(splitted, fishy = TRUE, filter= FALSE)
-h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
-h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
-
-sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/likelihood_games_h1")
-h1_likelihood_games <-parameters(splitted, mutation_position = "middle", filter= FALSE, verbose = TRUE)
-sink()
-lrt_procedure(data = splitted, prot = prot, tag = "likelihood_games", fishy=TRUE, parameters = h1_likelihood_games)
-sink()
-
-benchmark(parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE), parameters(splitted, fishy = TRUE, filter= FALSE),  replications = 1)
-
-
-# how much does it take to compute all jackobians?
-test_jack <- function(x, splitted){
-  ps <- lapply (names(splitted), function(elm){
-    node_data <- splitted[[elm]]
-    parms <- list(node_data = node_data, mutation_position = "end")
-    node_jacks <- p_derivative_jacfunc(x, parms)
-  })
-}
-
-benchmark(parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE), parameters(splitted, fishy = TRUE, filter= FALSE),  replications = 1)
-
-benchmark(test_jack(1, splitted), test_jack(2, splitted), replications = 3)
-
-
-
-
-lrts <-lrt_procedure(splitted, "testtag", fishy = TRUE, threshold = 3.84, parameters = h1_prms2)
-
-##
-try_df <- data.frame(matrix(unlist(h1_prms), nrow=length(h1_prms), byrow=T),stringsAsFactors=FALSE)
-names(try_df) <- c("node", "lambda_exp_root", "lambda_root", "p_root", "p_precision" )
-## equivalent to
-h1nodes <- sapply(h1_prms, function(elm){
-    elm["node"]
-})
-h1lambdaexp <- sapply(h1_prms, function(elm){
-  as.numeric(elm["lambda_exp.lambda_exp_root"])
-})
-h1lambdawei <- sapply(h1_prms, function(elm){
-  as.numeric(elm["lambda_weib.lambda_root"])
-})
-h1p <- sapply(h1_prms, function(elm){
-  as.numeric(elm["p.p_root"])
-})
-h1pprec <-sapply(h1_prms, function(elm){
-  as.numeric(elm["p_precision.p_precision"])
-})
-
-dframe <- data.frame(node = h1nodes, lambda_exp_root = h1lambdaexp,lambda_root = h1lambdawei, p_root =  h1p, p_precision = h1pprec)
-##
-head(dframe, 50)
 
 
 
