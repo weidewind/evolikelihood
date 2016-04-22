@@ -1,4 +1,8 @@
-install.packages("plotly")
+list.of.packages <- c("plotly")
+new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
+print (new.packages)
+if(length(new.packages)) install.packages(new.packages)
+
 library(scatterplot3d)
 ## equations for computing maximum likelihood estimators
 
@@ -13,23 +17,35 @@ lambda_derivative_exp <- function(parms){
     names(rkvector) = names(data)
   }
   mutation_position <- parms$mutation_position
-  
-  
+ # print (rkvector)
+ # print (head(data))
   D_vector <- compute_d_vector(data, rkvector)
   D <- sum(D_vector)
   
-  branch_vector <- sapply(names(data), function (name){
+ # print ("D")
+ # print (D)
+  
+  branch_vector <- sapply(names(data),  function (name){ #changed apply, 1 to sapply
     with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
+     # print ("r")
+     # print (r)
+     # print (str(no_events_branches))
       apply_res <- apply( no_events_branches, 1,
                           function(br){
+                            #print ("br")
+                           # print(class(br))
+                           # print (br["t_branch_start"][[1]])
                             tbeta1 <- as.numeric(br["t_branch_end"])
                             tbeta0 <- as.numeric(br["t_branch_start"])
+                            #print ( tbeta1-tbeta0)
                             tbeta1-tbeta0
                           })
-      apply_res*r
+      sum(apply_res)*r
     })
   })
-
+  
+ # print ("sum( branch_vector )")
+ # print (sum( branch_vector ))
   
   x <- D/sum( branch_vector )
   x
@@ -57,7 +73,7 @@ lambda_derivative_weib <- function (parms) {
   denominator_vector <- sapply(names(data), function (name){
     with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
       apply_res <- p_denominator_vector(no_events_branches, p)
-      apply_res*r
+      sum(apply_res)*r #changed to sum
     })
   })
   
@@ -79,7 +95,7 @@ supplier <- function (data,  rkvector, elm, mutation_position){
     no_events_branches = node_data
   }
   else if (mutation_position == "middle"){
-    no_events_branches = node_data[node_data["event_indicator"]==0,]
+    no_events_branches <- node_data[node_data["event_indicator"]==0,]
     first_halves = node_data[node_data["event_indicator"]==1,]
     first_halves[,"t_branch_end"] <- ( first_halves[,"t_branch_end"]+ first_halves[,"t_branch_start"])/2
     no_events_branches = rbind(no_events_branches, first_halves)
@@ -123,21 +139,21 @@ p_derivative <- function (x, parms, draw=FALSE) {
  numerator_vector <- sapply(names(data), function (name){
    with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
       apply_res <- p_numerator_vector(no_events_branches, x)
-      apply_res*r
+      sum(apply_res)*r #changed to sum 
   })
  })
 
  denominator_vector <- sapply(names(data), function (name){
    with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
      apply_res <- p_denominator_vector(no_events_branches, x)
-     apply_res*r
+     sum(apply_res)*r #changed to sum 
    })
  })
 
  talpha_vector <- sapply(names(data), function (name){
    with(supplier(data=data,  rkvector=rkvector, elm = name, mutation_position = mutation_position), {
      apply_res <- p_talpha_vector(events_branches, mutation_position)
-     apply_res*r
+     sum(apply_res)*r #changed to sum 
    })
  })
 
@@ -182,7 +198,7 @@ compute_d_vector <- function (data, rkvector){
 
 
 p_numerator_vector <- function(no_events_branches, x){
-  apply_res <- apply( no_events_branches, 1,
+  apply_res <- apply( no_events_branches, 1, #changed apply, 1 to saplly
                        function(elm){ 
                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), <apply> still tries to apply the function to.. header? the list is not empty: it contains the header
                            tbeta1 <- as.numeric(elm["t_branch_end"])
@@ -198,11 +214,11 @@ p_numerator_vector <- function(no_events_branches, x){
                          }  
                          else { 0 }
                        })
-  apply_res
+  as.vector(apply_res) #changed to as.vector()
 }
 
 p_denominator_vector <-function(no_events_branches, x){
-  apply_res <- apply( no_events_branches, 1,
+  apply_res <- apply( no_events_branches, 1, #changed apply, 1 to saplly
                        function(elm){
                          if(!is.na(elm["event_indicator"])){
                            tbeta1 <- as.numeric(elm["t_branch_end"])
@@ -214,11 +230,11 @@ p_denominator_vector <-function(no_events_branches, x){
                          }
                          else {0}
                        })
-  apply_res 
+  as.vector(apply_res ) #changed to as.vector()
 }
 
 p_talpha_vector <- function(events_branches, mutation_position){
-  apply_res <- apply( events_branches, 1,
+  apply_res <- apply( events_branches, 1, #changed apply, 1 to saplly
                        function(elm){
                          if(!is.na(elm["event_indicator"])){ #if (nrow(dataframe) == 0), apply still tries to apply the function to.. header? the list is not empty: it contains the header
                            if (mutation_position == "start"){talpha <- as.numeric(elm["t_branch_start"])}
@@ -232,7 +248,7 @@ p_talpha_vector <- function(events_branches, mutation_position){
                          }
                          else {0}
                        })
-  apply_res
+  as.vector(apply_res) #changed to as.vector()
 }
 
 ##
@@ -304,10 +320,10 @@ p_derivative_jacfunc <- function(x, parms){
 
 # plots partial derivative of loglikelihood function d(logL)/d(p) (weibull equation (2))  for given node_data 
 
-draw_p_derivative <- function(data, mutation_position = "end", to = 20, by = 0.01){
+draw_p_derivative <- function(data, mutation_position = "end", rkvector, to = 20, by = 0.01){
   #node_data <- splitted[[anc_node]]
   anc_node <- names(data)
-  parms <- list(data = data, mutation_position = mutation_position)
+  parms <- list(data = data, mutation_position = mutation_position, rkvector = rkvector)
   y <- sapply(seq(from = -5, to = to, by = by), function (elm){p_derivative(elm,parms, draw=TRUE)})
   plot( x = seq(from = -5, to = to, by = by), y, type = 'l', xlab = "p", ylab = "f2", axes=F, xaxt="n", yaxt="n", main = paste(c(anc_node, " mut pos ", mutation_position)), ylim = c(-10, 5))
   axis(1, pos=0)

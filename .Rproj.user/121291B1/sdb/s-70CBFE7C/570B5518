@@ -1,0 +1,16 @@
+{
+    "contents" : "library('RUnit')\n\ndirpath <- paste(c(getwd(), \"/R/\"),collapse= \"\")\nsource(paste(c(dirpath, \"MLE_functions.R\"),collapse= \"\"))\nsource(paste(c(dirpath, \"MLE_parameters.R\"),collapse= \"\"))\nsource(paste(c(dirpath, \"LRT.R\"),collapse= \"\"))\nsource(paste(c(dirpath, \"EM.R\"),collapse= \"\"))\n\n\ntest.suite <- defineTestSuite(\"basic\",\n                              #dirs = file.path(\"tests\"),\n                              paste(c(dirpath, \"tests\"),collapse= \"\"),\n                              testFileRegexp = 's_.R')\n \ntest.result <- runTestSuite(test.suite)\n \nprintTextProtocol(test.result)",
+    "created" : 1460977828785.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "534912585",
+    "id" : "570B5518",
+    "lastKnownWriteTime" : 1461327307,
+    "path" : "C:/Users/weidewind/workspace/evolikelihood/R/run_tests.R",
+    "project_path" : "R/run_tests.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

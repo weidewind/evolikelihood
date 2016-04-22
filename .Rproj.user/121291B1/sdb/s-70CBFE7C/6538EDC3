@@ -1,0 +1,17 @@
+{
+    "contents" : "prot <- \"h1\"\nprot_data <-  read.csv(paste(c(getwd(), \"/input/\" ,prot,\"_for_LRT.csv\"), collapse=\"\"),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n\ndraw_lnlikelihood (data=splitted, nodename = \"169.INTNODE2065\", to = 20, by = 0.01, mutation_position = \"middle\", fishy = TRUE)\ndraw_hazard(data=splitted, nodename = \"78.INTNODE4232\", to = 20, by = 0.05, mutation_position = \"middle\", fishy = TRUE)\n\nlrt_all(mutation_position = \"middle\", fishy = TRUE, tag = \"middle_search\", pack = \"rootsolve\", verbose = TRUE)\n\nbenchmark(parameters(splitted,  jack = FALSE, pack = \"nleqslv\", filter= FALSE), parameters(splitted,  jack = FALSE, pack = \"rootsolve\", filter= FALSE),  replications = 1)\n",
+    "created" : 1461320769499.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2434211204",
+    "id" : "6538EDC3",
+    "lastKnownWriteTime" : 1461318433,
+    "path" : "C:/Users/weidewind/workspace/evolikelihood/R/Actions.R",
+    "project_path" : "R/Actions.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

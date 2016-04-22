@@ -178,38 +178,32 @@ lrt <- function (node_data, lambda_exp, lambda_weib, p, fishy = FALSE, verbose =
 ## outputs parameters and lr for all nodes
 ## files like "h1_single_root_31_03_truelambda_fishy" were printed here
 
-lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  mutation_position = "end", pack = "rootsolve", parameters = NULL){
- # if (!is.null(parameters)){
+lrt_procedure <-function(data, prot, tag, fishy = FALSE, threshold = 3.84,  mutation_position = "end", pack = "rootsolve", params = NULL){
+ # if (!is.null(params)){
  #   warning("Parameters are defined, therefore mutation_position will be ignored")
   #}
   sink(file = paste(c(getwd(), "/output/" ,prot,"_single_root_", tag), collapse=""), append = FALSE, type = c("output", "message"),
        split = FALSE)
   
-  if (!is.null(parameters)){
-    parameters <- data.frame(matrix(unlist(parameters), nrow=length(parameters), byrow=T),stringsAsFactors=FALSE)
-    names(parameters) <- c("node", "lambda_exp_root", "lambda_root", "p_root", "p_precision" )
-    parameters <- transform(parameters, lambda_exp_root = as.numeric(lambda_exp_root), lambda_root = as.numeric(lambda_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))
-  }
-  
   lratios <- lapply (names(data), function(elm, mutation_position){
     mutation_position <- mutation_position
     node_data <- data[elm]
-    if (is.null(parameters)){
+    if (is.null(params)){
       node_roots <- as.list(find_single_root(node_data, mutation_position, pack=pack))
     }
     else {
-      node_roots <- parameters[parameters$node == elm,]
+      node_roots <- params[params$node == elm,]
     }
     if(!is.na(node_roots) && all(!is.na(node_roots)) && node_roots$p_precision < 1e-5  ){
       
-      lr <-lrt (node_data, lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_root, p = node_roots$p_root, fishy= TRUE, verbose=FALSE)
-      row <- c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = lr)
+      lr <-lrt (node_data, lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_weib_root, p = node_roots$p_root, fishy= TRUE, verbose=FALSE)
+      row <- c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_weib_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = lr)
       if(!is.na(lr) && lr > threshold){
-        print (c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = lr))
+        print (c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_weib_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = lr))
       }
     } 
     else {
-      row <- c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = NA) 
+      row <- c(node = elm,  lambda_exp = node_roots$lambda_exp_root, lambda_weib = node_roots$lambda_weib_root, p = node_roots$p_root, p_precision = node_roots$p_precision, lr = NA) 
     }
   }, mutation_position)
   sink()
@@ -231,7 +225,7 @@ lrt_all <- function(mutation_position = "middle", fishy = TRUE,  pack = "rootsol
     }
     prms <-parameters(splitted,  mutation_position = mutation_position,  verbose = verbose, pack = pack, filter= FALSE)
     if (verbose){sink()}
-    lrt_procedure(data = splitted, prot = prot, tag = tag, fishy=fishy, parameters = prms)
+    lrt_procedure(data = splitted, prot = prot, tag = tag, fishy=fishy, params = prms)
     sink()
   }
 }
@@ -240,10 +234,10 @@ lrt_all <- function(mutation_position = "middle", fishy = TRUE,  pack = "rootsol
 ## tests and procedures
 
 
-lrt_all(mutation_position = "middle", fishy = TRUE, tag = "middle_search", pack = "rootsolve", verbose = TRUE)
+#lrt_all(mutation_position = "middle", fishy = TRUE, tag = "middle_search", pack = "rootsolve", verbose = TRUE)
 
 
-benchmark(parameters(splitted,  jack = FALSE, pack = "nleqslv", filter= FALSE), parameters(splitted,  jack = FALSE, pack = "rootsolve", filter= FALSE),  replications = 1)
+#benchmark(parameters(splitted,  jack = FALSE, pack = "nleqslv", filter= FALSE), parameters(splitted,  jack = FALSE, pack = "rootsolve", filter= FALSE),  replications = 1)
 
 ##check that there are no zero-length branches with mutations
 no_muts_on_zero_branches <-function(prot){
@@ -263,21 +257,21 @@ test_jack <- function(x, splitted){
   })
 }
 
-prot <- "h1"
-prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
+#prot <- "h1"
+#prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+#splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 #node_data <- splitted["151.INTNODE4195"]
 #node_roots <- find_single_root(node_data, mutation_position = "middle", jack = FALSE, pack = "nleqslv", verbose = TRUE)
 
 #draw_hazard <-function(data=splitted, nodename = "78.NTNODE4232", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
-draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
-draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
-#h1_prms2 <-parameters(splitted, fishy = TRUE, filter= FALSE)
+#draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
+#draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
+#h1_params <-parameters(splitted, mutation_position = "middle", filter= FALSE)
 #h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
 #h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
 
 #sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/likelihood_games_h1")
 #h1_likelihood_games <-parameters(splitted, mutation_position = "middle", filter= FALSE, verbose = TRUE)
 #sink()
-#lrt_procedure(data = splitted, prot = prot, tag = "likelihood_games", fishy=TRUE, parameters = h1_likelihood_games)
+#lrt_procedure(data = splitted, prot = prot, tag = "likelihood_games", fishy=TRUE, params = h1_likelihood_games)
 #sink()

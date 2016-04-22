@@ -1,9 +1,11 @@
-install.packages("rootSolve")
+list.of.packages <- c("rootSolve", "rbenchmark", "nleqslv")
+new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
+if(length(new.packages)) install.packages(new.packages)
+
 library("rootSolve")
-install.packages("rbenchmark")
 library("rbenchmark")
-install.packages("nleqslv")
 library("nleqslv")
+
 
 
 ## multiroot, finds only one root 
@@ -42,7 +44,7 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pa
       print (paste("number of mutations ", sum(node_data$event)))
     }
     
-    pars <- list(data = data, rkvector, mutation_position = mutation_position)
+    pars <- list(data = data, rkvector = rkvector, mutation_position = mutation_position)
     lambda_exp_root <- lambda_derivative_exp(pars)
     if (verbose){print(paste("expon_lambda root ", lambda_exp_root))}
     
@@ -91,22 +93,22 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pa
     if(is.na(p_root)){
       print(paste("no p_roots found"))
       c(p_root = NA, p_precision = NA,
-        lambda_root = NA, lambda_exp_root = lambda_exp_root)
+        lambda_weib_root = NA, lambda_exp_root = lambda_exp_root)
     }
     else if(is.na(precision)){
       if (verbose){
         print(paste("p_root is ",p_root, " but estimated precision for p is Na, won't try to estimate lambda"))
       }
       c(p_root = p_root, p_precision = NA,
-        lambda_root = NA, lambda_exp_root = lambda_exp_root)
+        lambda_weib_root = NA, lambda_exp_root = lambda_exp_root)
     }
     
     else {
-      pars <- list(p = p_root, data = data, rkvector, mutation_position = mutation_position)
-      lambda_root <- lambda_derivative_weib(pars)
-      if (verbose){ print (c(p_root = p_root, lambda_root = lambda_root))}
+      pars <- list(p = p_root, data = data, rkvector = rkvector, mutation_position = mutation_position)
+      lambda_weib_root <- lambda_derivative_weib(pars)
+      if (verbose){ print (c(p_root = p_root, lambda_weib_root = lambda_weib_root))}
       c(p_root = p_root, p_precision = precision,
-        lambda_root = lambda_root,
+        lambda_weib_root = lambda_weib_root,
         lambda_exp_root = lambda_exp_root)
     }
     
@@ -117,7 +119,7 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pa
       print ("No mutations in the subtree, all roots NA")
     }
     c(p_root = NA, p_precision = NA,
-      lambda_root = NA, lambda_exp_root = NA)
+      lambda_weib_root = NA, lambda_exp_root = NA)
   }
 }
 
@@ -130,7 +132,7 @@ parameters <-function(data, mutation_position = "end", rkvector, filter = TRUE, 
     node_data <- data[elm]
     node_roots <- find_single_root(node_data, mutation_position, rkvector, jack = jack, pack = pack, verbose = verbose)
     if (!filter || filter && !is.na(node_roots) &&  all(is.finite(node_roots)) && node_roots["p_precision"] < 1e-5 ) {
-        c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"])
+        c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_weib_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"])
     }
 
   }, mut_pos = mutation_position)
@@ -138,26 +140,22 @@ parameters <-function(data, mutation_position = "end", rkvector, filter = TRUE, 
   if (filter) {
     ps  <- Filter(Negate(is.null), ps)
   }
-  ps
+  params <- data.frame(matrix(unlist(ps), nrow=length(ps), byrow=T),stringsAsFactors=FALSE)
+  names(params) <- c("node", "lambda_exp_root", "lambda_weib_root", "p_root", "p_precision" )
+  params <- transform(params, lambda_exp_root = as.numeric(lambda_exp_root), lambda_weib_root = as.numeric(lambda_weib_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))
+  
 }
 
 
-
-## Inconvenient. computes all parameters, plots p and log(p) histograms
-parameter_hists <- function(data, mutation_position = "end", fishy = FALSE){
-  params <- parameters(data, mutation_position = "end", fishy)
-  p_hists(params)
-}
 
 
 
 ## plots p and log(p) histograms given a params list (computed by parameters function)
+## for dataframe params 
 
 p_hists <- function(params){
-  params <- params[sapply(params, function(elm){!is.na(elm[["p.p_root"]])})] #select nodes with p root defined
-  p_roots <- sapply(params, function(elm) {
-    as.numeric(elm[["p.p_root"]])
-  })
+  params <-  params[!is.na(params_df["p_root"]),] #select nodes with p root defined
+  p_roots <- params[, "p_root"]
   h <- hist(p_roots, breaks = 30, plot = FALSE)
   plot(h,  main = paste("Histogram of ",prot, " p"), xlab = "p")
   lh <- hist(log(p_roots), breaks = 30, plot = FALSE)
@@ -168,28 +166,21 @@ p_hists <- function(params){
 ## selects lamdas corresponding to  p>threshold if right == TRUE 
 ## ( p <= threshold if right == FALSE)
 ## and plots a histogram 
+
 lambda_hist <- function(prot, params, threshold, right = TRUE){
-  params <- params[sapply(params, function(elm){!is.na(elm[["p.p_root"]])})] #select nodes with p root defined
-  p_roots <- sapply(params, function(elm) {
-    as.numeric(elm[["p.p_root"]])
-  })
-  boolean <- sapply(params, function(elm) {
-    
-    if (as.numeric(elm[["p.p_root"]]) > threshold) {right == TRUE}
-    else {right == FALSE}
-  })
-  
-  lambda <- sapply(params[boolean], function(elm) {
-    as.numeric(elm["lambda_weib.lambda_root"])
-  })
+  params <-  params[!is.na(params_df["p_root"]),] #select nodes with p root defined
+  p_roots <- params[, "p_root"]
   if (right){
+    lambdas <- params[params["p_root"] > threshold, "lambda_weib_root"]
     sign = ">"
   }
   else {
+    lambdas <- params[params["p_root"] <= threshold, "lambda_weib_root"]
     sign = "<="
   }
-  h <- hist(lambda, breaks = 30, plot = FALSE)
+
+  h <- hist(lambdas, breaks = 30, plot = FALSE)
   plot(h,  main = paste("Histogram of ",prot, " lambda for p", sign, " ", threshold), xlab = "lambda")
-  h <- hist(log(lambda), breaks = 30, plot = FALSE)
+  h <- hist(log(lambdas), breaks = 30, plot = FALSE)
   plot(h,  main = paste("Histogram of ",prot, " log(lambda) for p", sign, " ", threshold), xlab = "lambda")
 }
