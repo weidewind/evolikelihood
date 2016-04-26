@@ -1,12 +1,12 @@
 {
-    "contents" : "prot <- \"h1\"\nprot_data <-  read.csv(paste(c(getwd(), \"/input/\" ,prot,\"_for_LRT.csv\"), collapse=\"\"),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n\ndraw_lnlikelihood (data=splitted, nodename = \"169.INTNODE2065\", to = 20, by = 0.01, mutation_position = \"middle\", fishy = TRUE)\ndraw_hazard(data=splitted, nodename = \"78.INTNODE4232\", to = 20, by = 0.05, mutation_position = \"middle\", fishy = TRUE)\n\nlrt_all(mutation_position = \"middle\", fishy = TRUE, tag = \"middle_search\", pack = \"rootsolve\", verbose = TRUE)\n\nbenchmark(parameters(splitted,  jack = FALSE, pack = \"nleqslv\", filter= FALSE), parameters(splitted,  jack = FALSE, pack = \"rootsolve\", filter= FALSE),  replications = 1)\n",
+    "contents" : "prot <- \"h1\"\nprot_data <-  read.csv(paste(c(getwd(), \"/input/\" ,prot,\"_for_LRT.csv\"), collapse=\"\"),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n##\ndraw_lnlikelihood (data=splitted, nodename = \"169.INTNODE2065\", to = 20, by = 0.01, mutation_position = \"middle\", fishy = TRUE)\ndraw_hazard(data=splitted, nodename = \"78.INTNODE4232\", to = 20, by = 0.05, mutation_position = \"middle\", fishy = TRUE)\n##\nlrt_all(mutation_position = \"middle\", fishy = TRUE, tag = \"middle_search\", pack = \"rootsolve\", verbose = TRUE)\n##\nbenchmark(parameters(splitted,  jack = FALSE, pack = \"nleqslv\", filter= FALSE), parameters(splitted,  jack = FALSE, pack = \"rootsolve\", filter= FALSE),  replications = 1)\n\n##\nsink (paste(c(getwd(), \"/output/h1_emtest\"),collapse= \"\"))\nem_results <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = \"cluster\", mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\nsink()  \n\nsink (paste(c(getwd(), \"/output/h1_emtest2\"),collapse= \"\"))\nem_results2 <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = \"by\", init_params = c(0.002,8,0.0001,0.9,0.005,0.5,0.002,1.5), init_weights = c(0.25,0.25,0.25, 0.25),mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\nsink() \n\nem_results <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = \"by\", init_params = c(0.002,8,0.0001,0.7,0.005,0.7,0.002,1.2), init_weights = c(0.25,0.25,0.25, 0.25), mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\n",
     "created" : 1461320769499.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2434211204",
+    "hash" : "3271902586",
     "id" : "6538EDC3",
-    "lastKnownWriteTime" : 1461318433,
+    "lastKnownWriteTime" : 1461681409,
     "path" : "C:/Users/weidewind/workspace/evolikelihood/R/Actions.R",
     "project_path" : "R/Actions.R",
     "properties" : {

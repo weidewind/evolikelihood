@@ -10,8 +10,17 @@ source(paste(c(dirpath, "EM.R"),collapse= ""))
 test.suite <- defineTestSuite("basic",
                               #dirs = file.path("tests"),
                               paste(c(dirpath, "tests"),collapse= ""),
-                              testFileRegexp = 's_.R')
+                              testFileRegexp = 'test.R')
  
 test.result <- runTestSuite(test.suite)
  
 printTextProtocol(test.result)
+
+test.suite.long <- defineTestSuite("long",
+                              #dirs = file.path("tests"),
+                              paste(c(dirpath, "tests"),collapse= ""),
+                              testFileRegexp = 'test_long.R')
+
+test.result.long <- runTestSuite(test.suite.long)
+
+printTextProtocol(test.result.long)

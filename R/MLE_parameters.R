@@ -125,14 +125,14 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pa
 
 ## computes parameters for all nodes, outputs only complete sets of parameters
 #parameters <-function(prot, tag, fishy = FALSE){
-parameters <-function(data, mutation_position = "end", rkvector, filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE){
+parameters <-function(data, mutation_position = "middle", rkvector, filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE){
   
   ps <- lapply (names(data), function(elm, mut_pos){
     mutation_position <- mut_pos
     node_data <- data[elm]
     node_roots <- find_single_root(node_data, mutation_position, rkvector, jack = jack, pack = pack, verbose = verbose)
     if (!filter || filter && !is.na(node_roots) &&  all(is.finite(node_roots)) && node_roots["p_precision"] < 1e-5 ) {
-        c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_weib_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"])
+        c(node = elm, lambda_exp = node_roots["lambda_exp_root"], lambda_weib = node_roots["lambda_weib_root"], p = node_roots["p_root"], p_precision = node_roots["p_precision"], events = sum(node_data[[1]]$event))
     }
 
   }, mut_pos = mutation_position)
@@ -141,8 +141,8 @@ parameters <-function(data, mutation_position = "end", rkvector, filter = TRUE, 
     ps  <- Filter(Negate(is.null), ps)
   }
   params <- data.frame(matrix(unlist(ps), nrow=length(ps), byrow=T),stringsAsFactors=FALSE)
-  names(params) <- c("node", "lambda_exp_root", "lambda_weib_root", "p_root", "p_precision" )
-  params <- transform(params, lambda_exp_root = as.numeric(lambda_exp_root), lambda_weib_root = as.numeric(lambda_weib_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision))
+  names(params) <- c("node", "lambda_exp_root", "lambda_weib_root", "p_root", "p_precision", "events" )
+  params <- transform(params, lambda_exp_root = as.numeric(lambda_exp_root), lambda_weib_root = as.numeric(lambda_weib_root), p_root = as.numeric(p_root), p_precision = as.numeric(p_precision), events = as.numeric(events))
   
 }
 
