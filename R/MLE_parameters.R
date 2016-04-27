@@ -154,7 +154,7 @@ parameters <-function(data, mutation_position = "middle", rkvector, filter = TRU
 ## for dataframe params 
 
 p_hists <- function(params){
-  params <-  params[!is.na(params_df["p_root"]),] #select nodes with p root defined
+  params <-  params[!is.na(params["p_root"]),] #select nodes with p root defined
   p_roots <- params[, "p_root"]
   h <- hist(p_roots, breaks = 30, plot = FALSE)
   plot(h,  main = paste("Histogram of ",prot, " p"), xlab = "p")
@@ -168,7 +168,7 @@ p_hists <- function(params){
 ## and plots a histogram 
 
 lambda_hist <- function(prot, params, threshold, right = TRUE){
-  params <-  params[!is.na(params_df["p_root"]),] #select nodes with p root defined
+  params <-  params[!is.na(params["p_root"]),] #select nodes with p root defined
   p_roots <- params[, "p_root"]
   if (right){
     lambdas <- params[params["p_root"] > threshold, "lambda_weib_root"]

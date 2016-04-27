@@ -150,6 +150,17 @@ aic <- function (lnL, p){
   2*(p-lnL)
 }
 
+# lnl - loglikelihood, p - number of free parameters in the model, n - sample size
+bic < -function (lnL, model = c("weibull", "exponential"), cluster.number, n){
+  if (model == "weibull"){
+    p = 3*cluster.number -1;
+  }
+  else {
+    p = 2*cluster.number -1;
+  }
+  -2*lnL + p*log(n)
+}
+
 # LR  LR = 2*(lnL1-lnL2) approximately follows a chi-square distribution with 1 degree of freedom
 lrt <- function (node_data, lambda_exp, lambda_weib, p, fishy = FALSE, verbose = FALSE){
   weibull <- lnlikelihood_weibull(node_data, lambda = lambda_weib, p = p, fishy)

@@ -1,5 +1,5 @@
 
-if (!(prot == "h1"  !is.null(splitted) && length(splitted) == 539)){
+if (!(prot == "h1" && !is.null(splitted) && length(splitted) == 539)){
     prot <- "h1"
     inpath <- paste(c(getwd(), "/input/"),collapse= "")
     prot_data <-  read.csv(paste(c(inpath, prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
@@ -51,3 +51,30 @@ if (is.null(params) || nrow(params) != 142){
 #  
 #  
 #}
+
+
+
+test_initialize_by <-function (){
+  cluster.number = 3
+  init_params = c(9,1,1,1,2,3) #incorrect number of parameters
+  init_weights = c(0.5, 0.4, 0.1)
+  model = "exponential"
+  
+  checkException(initialize_by(init_params =init_params, init_weights= init_weights,model = model, cluster.number = cluster.number),silent = TRUE)
+
+  cluster.number = 3
+  init_params = c(9,1,1) #incorrect number of parameters
+  init_weights = c(0.5, 0.4, 0.1)
+  model = "weibull"
+  
+  checkException(initialize_by(init_params =init_params, init_weights= init_weights,model = model, cluster.number = cluster.number),silent = TRUE)
+  
+  
+  cluster.number = 3
+  init_params = c(9,1,1)
+  init_weights = c(0.5, 0.4, 0.6) #incorrect sum of weights
+  model = "exponential"
+  
+  checkException(initialize_by(init_params =init_params, init_weights= init_weights,model = model, cluster.number = cluster.number),silent = TRUE)
+  
+}

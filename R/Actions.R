@@ -15,8 +15,13 @@ sink (paste(c(getwd(), "/output/h1_emtest"),collapse= ""))
 em_results <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = "cluster", mutation_position = "middle",  filtering = "single", trace = TRUE)
 sink()  
 
-sink (paste(c(getwd(), "/output/h1_emtest2"),collapse= ""))
-em_results2 <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = "by", init_params = c(0.002,8,0.0001,0.9,0.005,0.5,0.002,1.5), init_weights = c(0.25,0.25,0.25, 0.25),mutation_position = "middle",  filtering = "single", trace = TRUE)
+sink (paste(c(getwd(), "/output/h1_emtest3"),collapse= ""))
+em_results3 <- em_procedure(data=fdata,  params=fparams, iter = 1000, cluster.number= 5, init_method = "by", init_params = c(0.002,8,0.0001,0.9,0.005,0.5,0.002,1.5, 0.0001, 9), init_weights = c(0.15,0.25,0.25, 0.25, 0.1),mutation_position = "middle",  filtering = "single", trace = TRUE)
+sink() 
+
+
+sink (paste(c(getwd(), "/output/h1_emtest4"),collapse= ""))
+em_results4 <- em_procedure(data=fdata,  model = "exponential", params=fparams, iter = 1000, cluster.number= 3, init_method = "by", init_params = c(0.002,0.0001,0.009), init_weights = c(0.25,0.6, 0.15),mutation_position = "middle",  filtering = "single", trace = TRUE)
 sink() 
 
 em_results <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = "by", init_params = c(0.002,8,0.0001,0.7,0.005,0.7,0.002,1.2), init_weights = c(0.25,0.25,0.25, 0.25), mutation_position = "middle",  filtering = "single", trace = TRUE)

@@ -1,4 +1,4 @@
-if (!(prot == "h1"  !is.null(splitted) && length(splitted) == 539)){
+if (!(prot == "h1" && !is.null(splitted) && length(splitted) == 539)){
   prot <- "h1"
   inpath <- paste(c(getwd(), "/input/"),collapse= "")
   prot_data <-  read.csv(paste(c(inpath, prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  

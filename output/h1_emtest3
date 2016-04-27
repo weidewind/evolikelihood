@@ -1,0 +1,1056 @@
+[1] "------------Step 1"
+[1] "Running in group mode"
+[1] "expon_lambda root  0.000583729813411711"
+[1] "staring with p = " "0.2"              
+[1] "precision_p  1.56382849392234e-07"
+          p_root lambda_weib_root 
+    10.156841980      0.002892535 
+[1] "Running in group mode"
+[1] "expon_lambda root  0.000848729108635065"
+[1] "staring with p = " "0.2"              
+[1] "precision_p  4.61852778244065e-14"
+          p_root lambda_weib_root 
+    0.5263328142     0.0002591602 
+[1] "Running in group mode"
+[1] "expon_lambda root  0.00464793184984145"
+[1] "staring with p = " "0.2"              
+[1] "precision_p  1.47792889038101e-11"
+          p_root lambda_weib_root 
+     0.630618153      0.004881248 
+[1] "Running in group mode"
+[1] "expon_lambda root  0.00153971430441183"
+[1] "staring with p = " "0.2"              
+[1] "precision_p  1.72462932823692e-10"
+          p_root lambda_weib_root 
+     0.991255853      0.001526659 
+[1] "Running in group mode"
+[1] "expon_lambda root  0.000573231770011967"
+[1] "staring with p = " "0.2"              
+[1] "precision_p  1.3256904856376e-25"
+          p_root lambda_weib_root 
+    2.000000e-01     3.740292e-05 
+                         [,1]         [,2]         [,3]         [,4]          [,5]
+156.INTNODE1247  6.222670e-21 7.999440e-04 0.9914611773 7.738879e-03  2.115020e-47
+240.INTNODE1247  2.556811e-17 1.455568e-03 0.9716065000 2.693793e-02  2.577474e-43
+277.INTNODE1249  7.845780e-33 1.107843e-05 0.9997338442 2.550774e-04  1.136100e-72
+467.INTNODE1354  1.691494e-43 5.611157e-07 0.9999669430 3.249592e-05  1.291965e-96
+7.INTNODE1628    1.893456e-59 1.058794e-07 0.9999995600 3.340785e-07 1.038061e-114
+202.INTNODE1911  1.424381e-46 1.019233e-05 0.9999734631 1.634457e-05  2.417652e-88
+203.INTNODE2046  1.051169e-32 1.304411e-04 0.9997155855 1.539733e-04  1.015004e-60
+202.INTNODE2079  1.896270e-27 2.260843e-03 0.9920098256 5.729331e-03  6.713775e-55
+202.INTNODE2080  2.260587e-48 1.549864e-05 0.9999678002 1.670119e-05  2.014412e-90
+206.INTNODE2084  5.657492e-25 2.360413e-01 0.1662873993 5.976713e-01  2.294396e-52
+52.INTNODE2226   1.460653e-31 8.330578e-02 0.0123771819 9.043170e-01  8.832215e-72
+162.INTNODE2226  2.814404e-45 3.413642e-02 0.5122460864 4.536175e-01  2.495367e-99
+157.INTNODE2228  4.189498e-38 4.767754e-03 0.7370512851 2.581810e-01  5.022045e-91
+290.INTNODE2230  9.943466e-27 2.993139e-02 0.2496262937 7.204423e-01  3.334973e-66
+205.INTNODE2233  2.899122e-61 1.648150e-08 0.9998889937 1.109898e-04 1.509693e-152
+467.INTNODE2283  2.377230e-20 2.564193e-03 0.9724651334 2.497067e-02  8.263592e-47
+99.INTNODE2298   1.265130e-29 2.041870e-03 0.5699857195 4.279724e-01  2.666160e-81
+111.INTNODE2298  3.468106e-22 2.080095e-02 0.0966368089 8.825622e-01  5.313779e-61
+489.INTNODE2301  1.408499e-26 5.888141e-03 0.0204544527 9.736574e-01  6.745495e-78
+3.INTNODE2304   3.313318e-107 9.480000e-18 0.9999999936 6.437120e-09 2.289615e-287
+182.INTNODE2305  3.349658e-29 1.139460e-02 0.0347724536 9.538329e-01  6.230688e-81
+169.INTNODE2394 1.054165e-126 6.135665e-27 0.9999999999 1.471817e-10  0.000000e+00
+199.INTNODE2394  2.447668e-13 5.663955e-02 0.0266296832 9.167308e-01  5.232694e-39
+361.INTNODE2395  1.468671e-11 1.520478e-01 0.0002179189 8.477343e-01  4.725328e-37
+86.INTNODE2399   1.050365e-10 1.359790e-01 0.0005894287 8.634316e-01  4.541164e-36
+289.INTNODE2399  2.057994e-60 1.130925e-09 0.9992801122 7.198867e-04 2.457723e-175
+326.INTNODE2400  4.578231e-48 4.501072e-08 0.9877285040 1.227145e-02 1.615193e-149
+88.INTNODE2401   1.652487e-17 2.229404e-03 0.0090362114 9.887344e-01  1.709732e-67
+97.INTNODE2401   1.378950e-19 3.365132e-03 0.0201339726 9.765009e-01  6.864010e-70
+287.INTNODE2401  4.589826e-14 3.215841e-01 0.0037563883 6.746595e-01  5.899357e-40
+289.INTNODE2401  2.398840e-24 4.825320e-04 0.9969410386 2.576429e-03  2.895386e-51
+16.INTNODE2402   4.605836e-07 1.856739e-01 0.0010742340 8.132514e-01  6.172015e-32
+74.INTNODE2402   8.354477e-18 4.682228e-03 0.0331923831 9.621254e-01  7.053094e-68
+91.INTNODE2404   3.651436e-20 4.488636e-04 0.0879924240 9.115587e-01  2.203787e-82
+155.INTNODE2404  1.489369e-11 3.404014e-02 0.0094470772 9.565128e-01  6.531824e-49
+223.INTNODE2404  3.957198e-06 1.898207e-01 0.0016584334 8.085170e-01  7.160642e-31
+173.INTNODE2405  8.530788e-21 1.850418e-01 0.1545524852 6.604057e-01  1.470673e-59
+12.INTNODE2406   5.337489e-13 2.549258e-03 0.0092431801 9.882076e-01  2.330326e-62
+13.INTNODE2406   6.951446e-06 1.926519e-01 0.0013307664 8.060104e-01  1.359230e-30
+71.INTNODE2406   8.226724e-10 2.744648e-02 0.0041802307 9.683733e-01  6.538677e-47
+142.INTNODE2406  3.756156e-87 4.506830e-24 0.9999985774 1.422634e-06  0.000000e+00
+202.INTNODE2406  1.667650e-53 6.280474e-09 0.9999169599 8.303379e-05 1.227421e-143
+205.INTNODE2406  3.839980e-38 2.730328e-10 0.9778885718 2.211143e-02 7.806363e-150
+206.INTNODE2406  5.673140e-32 3.825385e-08 0.8035971849 1.964028e-01 3.806768e-131
+209.INTNODE2406  8.705658e-12 3.058141e-02 0.0111576897 9.582609e-01  3.604526e-49
+210.INTNODE2406  5.102221e-15 3.139984e-03 0.0235984993 9.732615e-01  1.126680e-64
+418.INTNODE2406  2.419895e-29 7.588277e-05 0.5689647498 4.309594e-01 1.055718e-104
+293.INTNODE2415  1.312366e-14 2.748824e-04 0.0652551641 9.344700e-01  5.183776e-76
+138.INTNODE2416  5.610123e-25 6.020917e-05 0.6402873721 3.596524e-01  1.048990e-99
+240.INTNODE2421  5.430023e-19 2.535715e-01 0.2312557576 5.151727e-01  1.618789e-57
+238.INTNODE2422 7.535708e-192 1.856801e-46 1.0000000000 2.733350e-19  0.000000e+00
+269.INTNODE2423  2.820835e-08 1.842109e-02 0.0321642450 9.494146e-01  3.979720e-45
+311.INTNODE2423  3.235571e-06 3.453621e-02 0.0070970492 9.583635e-01  8.055546e-43
+73.INTNODE2425   1.684358e-19 2.374672e-01 0.3903043942 3.722284e-01  4.318649e-58
+151.INTNODE2425  3.507712e-43 1.060054e-05 0.9982905351 1.698864e-03 2.297108e-120
+207.INTNODE2425  3.103084e-08 1.516347e-02 0.2136769441 7.711596e-01  4.226628e-33
+145.INTNODE2426  4.376945e-18 6.733476e-04 0.3883754252 6.109512e-01  4.992790e-80
+178.INTNODE2426  6.067962e-19 1.349005e-07 0.1992319829 8.007679e-01 2.341114e-116
+88.INTNODE2428   2.538011e-21 4.225366e-04 0.9613128157 3.826465e-02  9.090617e-60
+111.INTNODE2428  2.382444e-21 1.252430e-07 0.6970717398 3.029281e-01 3.891646e-107
+155.INTNODE2428  2.535816e-11 6.742345e-03 0.7025140602 2.907436e-01  1.432743e-36
+470.INTNODE2428  1.344852e-05 4.143958e-02 0.0204973865 9.380496e-01  4.052501e-42
+4.INTNODE2429    2.718465e-07 6.960940e-01 0.0229151205 2.809906e-01  2.997606e-32
+13.INTNODE2429   1.361900e-19 3.695199e-04 0.9405832058 5.904727e-02  8.734323e-58
+90.INTNODE2429   7.629500e-16 1.177941e-02 0.5368438190 4.513768e-01  1.138937e-65
+113.INTNODE2429  1.022991e-17 1.058031e-08 0.1878802380 8.121198e-01 9.725550e-127
+145.INTNODE2429  1.442770e-15 2.644581e-03 0.9350985122 6.225691e-02  2.355786e-41
+171.INTNODE2429  2.670687e-31 2.683991e-05 0.9830335971 1.693956e-02 7.631749e-107
+179.INTNODE2429  1.879498e-21 3.356538e-05 0.7715225833 2.284439e-01  1.272641e-95
+184.INTNODE2429  1.712938e-23 8.426226e-04 0.8818426175 1.173148e-01  3.431230e-86
+186.INTNODE2429  1.459267e-13 2.023417e-06 0.1069010552 8.930969e-01  2.087044e-98
+202.INTNODE2429  2.570118e-23 1.633021e-05 0.9729763730 2.700730e-02  8.445807e-74
+205.INTNODE2429  2.297915e-19 2.325826e-04 0.9554087167 4.435870e-02  1.697356e-57
+289.INTNODE2429  1.098665e-07 1.183265e-02 0.2626541772 7.255131e-01  1.854501e-32
+415.INTNODE2429  3.820219e-11 1.213896e-02 0.1322016062 8.556594e-01  2.606091e-60
+113.INTNODE2433  3.374298e-22 6.991785e-04 0.9938741269 5.426695e-03  7.754531e-49
+292.INTNODE2433  1.732325e-01 4.925519e-01 0.0117818522 3.224338e-01  1.519247e-25
+78.INTNODE2434   3.424033e-05 1.302453e-01 0.0982325087 7.714879e-01  1.243524e-41
+85.INTNODE2434   3.170720e-03 5.113254e-03 0.0382889098 9.534271e-01  3.773551e-51
+169.INTNODE2434  1.999342e-21 1.231868e-09 0.8057604893 1.942395e-01 6.843469e-119
+176.INTNODE2434  3.256238e-46 3.445125e-26 0.9848850025 1.511500e-02  0.000000e+00
+201.INTNODE2434  4.741753e-11 2.448102e-06 0.1705417735 8.294558e-01  1.777316e-95
+238.INTNODE2434  1.272997e-17 2.374306e-04 0.9354114214 6.435115e-02  1.651596e-55
+488.INTNODE2434  1.445787e-11 4.546166e-05 0.3094121356 6.905424e-01  2.760710e-84
+60.INTNODE2435   4.025742e-09 1.494458e-02 0.4132476655 5.718077e-01  4.125663e-34
+171.INTNODE2435  1.087835e-18 1.811663e-03 0.9740150145 2.417332e-02  6.806645e-45
+202.INTNODE2435  3.003920e-12 5.026453e-03 0.7940392127 2.009343e-01  1.312219e-37
+206.INTNODE2435  1.253298e-13 8.916739e-04 0.7134045281 2.857038e-01  4.895442e-51
+232.INTNODE2435  1.871193e-07 9.367553e-03 0.3273612697 6.632710e-01  3.526984e-32
+261.INTNODE2435  4.756363e-07 4.571111e-05 0.1332188020 8.667350e-01  5.842111e-79
+[1] 1.960740e-03 4.410906e-02 4.999889e-01 4.539413e-01 1.688077e-27
+[1] "model lnL"
+[1] -2801.2
+[1] "------------Step 2"
+No documentation for ‘scatterplot’ in specified packages and libraries:
+you could try ‘??scatterplot’
+character(0)
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:24:24 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 1 error, 0 failures
+ERROR in C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R: Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  2:21: unexpected '!'
+1: 
+2: if (!(prot == "h1"  !
+                       ^
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R: ERROR !! 
+Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  2:21: unexpected '!'
+1: 
+2: if (!(prot == "h1"  !
+                       ^
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.17 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.03 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0.02 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0.02 seconds)
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:24:24 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R: Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  1:21: unexpected '!'
+1: if (!(prot == "h1"  !
+                        ^
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R: ERROR !! 
+Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  1:21: unexpected '!'
+1: if (!(prot == "h1"  !
+                        ^
+character(0)
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:25:06 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 1 error, 0 failures
+ERROR in C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R: Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  2:21: unexpected '!'
+1: 
+2: if (!(prot == "h1"  !
+                       ^
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R: ERROR !! 
+Error while sourcing  C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R : Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE) : 
+  2:21: unexpected '!'
+1: 
+2: if (!(prot == "h1"  !
+                       ^
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.17 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.04 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0.02 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.42 0 15.34 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:25:21 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ... Timing stopped at: 0 0 0 
+ done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:25:44 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 1 error, 0 failures
+ERROR in test_initialize_by: Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid params length: expected vector of length 2*cluster.number
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: ERROR !! 
+Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid params length: expected vector of length 2*cluster.number
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.19 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.05 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0.02 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.3 0 14.45 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:25:58 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ... Timing stopped at: 0 0 0 
+ done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:27:57 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 1 error, 0 failures
+ERROR in test_initialize_by: Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid weights length: expected vector of length cluster.number
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: ERROR !! 
+Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid weights length: expected vector of length cluster.number
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.17 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.03 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0.01 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 13.76 0 13.85 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:28:11 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:28:30 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (0 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.19 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.04 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0.02 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.85 0 14.9 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:28:45 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:31:45 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (0 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.18 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.05 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 13.85 0 13.94 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:31:59 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ... Timing stopped at: 0 0 0 
+ done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:32:36 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 1 error, 0 failures
+ERROR in test_initialize_by: Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid params length: expected vector of length 2*cluster.number
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: ERROR !! 
+Error in initialize_by(init_params = init_params, init_weights = init_weights,  : 
+  Invalid params length: expected vector of length 2*cluster.number
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.19 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.06 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+Timing stopped at: 3.32 0.01 3.53 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:32:52 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (0 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.19 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.05 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0.02 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 7.41 0 7.47 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:36:43 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (1 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.19 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.04 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.07 0 14.12 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:36:57 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:37:16 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (1 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.18 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.05 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.2 0 14.29 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:37:30 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+character(0)
+
+
+Executing test function test_initialize_by  ...  done successfully.
+
+
+
+Executing test function test_compute_d_vector  ...  done successfully.
+
+
+
+Executing test function test_group_mode_lambda_derivative_exp  ...  done successfully.
+
+
+
+Executing test function test_group_mode_supplier  ...  done successfully.
+
+
+
+Executing test function test_single_mode_supplier  ...  done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:38:55 2016 
+*********************************************** 
+Number of test functions: 5 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+basic - 5 test functions, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: basic 
+Test function regexp: ^test.+ 
+Test file regexp: test.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test.R 
+test_initialize_by: (3 checks) ... OK (0 seconds)
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/MLE_functions_test.R 
+test_compute_d_vector: (1 checks) ... OK (0.17 seconds)
+test_group_mode_lambda_derivative_exp: (6 checks) ... OK (0.03 seconds)
+test_group_mode_supplier: (6 checks) ... OK (0 seconds)
+test_single_mode_supplier: (6 checks) ... OK (0 seconds)
+
+
+Executing test function test_initialize_by_clustering  ... [1] "Running in group mode"
+[1] "expon_lambda root  NA"
+[1] "staring with p = " "0.2"              
+Timing stopped at: 14.29 0 14.38 
+ done successfully.
+
+RUNIT TEST PROTOCOL -- Wed Apr 27 13:39:09 2016 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 1 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+long - 1 test function, 1 error, 0 failures
+ERROR in test_initialize_by_clustering: Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+
+
+
+Details 
+*************************** 
+Test Suite: long 
+Test function regexp: ^test.+ 
+Test file regexp: test_long.R 
+Involved directory: 
+C:/Users/weidewind/workspace/evolikelihood/R/tests 
+--------------------------- 
+Test file: C:/Users/weidewind/workspace/evolikelihood/R/tests/EM_test_long.R 
+test_initialize_by_clustering: ERROR !! 
+Error in stode(y, time, func, parms = parms, ...) : 
+  Model function must return a list of values, of which first element has length =length of y
+ 
+K-means clustering with 2 clusters of sizes 2, 6
+
+Cluster means:
+        [,1]
+1 0.45000000
+2 0.03116667
+
+Clustering vector:
+[1] 2 2 2 1 2 1 2 2
+
+Within cluster sum of squares by cluster:
+[1] 0.045000000 0.004808833
+ (between_SS / total_SS =  84.1 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss" "betweenss"    "size"         "iter"         "ifault"      
+K-means clustering with 2 clusters of sizes 2, 6
+
+Cluster means:
+        [,1]
+1 0.45000000
+2 0.03116667
+
+Clustering vector:
+[1] 2 2 2 1 2 1 2 2
+
+Within cluster sum of squares by cluster:
+[1] 0.045000000 0.004808833
+ (between_SS / total_SS =  84.1 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss" "betweenss"    "size"         "iter"         "ifault"      

@@ -16,19 +16,15 @@ if(length(new.packages)) install.packages(new.packages)
 
 
 
-initialize_by_clustering <- function (data, params, mutation_position = "middle", cluster.number = 4){
-#  f <- filter_unsolved(data=data, params=params)
-#  fparams = f$fparams
- # fdata = f$fdata
-  parclust <-params[,c("lambda_weib_root", "p_root")]
-  
-  #filtered <-params[!is.na(params$p_precision) ,]
- # filtered <-filtered[filtered$p_precision< 1e-5  ,]
-  #df <-filtered[,c("lambda_weib_root", "p_root")]
- # data_filtered <- data[filtered$node]
-  
-  scaling <-max(parclust[,2])/max(parclust[,1])
-  parclust_scaled <- data.frame(lambda_weib_root = scaling*parclust[,1], p_root = parclust[,2])
+initialize_by_clustering <- function (data, params, mutation_position = "middle", cluster.number = 4, model = c("weibull", "exponential")){
+  if (model == "weibull"){
+    parclust <-params[,c("lambda_weib_root", "p_root")]
+    scaling <-max(parclust[,2])/max(parclust[,1])
+    parclust_scaled <- data.frame(lambda_weib_root = scaling*parclust[,1], p_root = parclust[,2])
+  }
+  else {
+    parclust_scaled <- data.frame(lambda_exp_root = params[,c("lambda_exp_root")])
+  }
   
   clusters <-kmeans(parclust_scaled, cluster.number)
   categories <- seq(from = 1, to = cluster.number, by = 1)
@@ -52,25 +48,62 @@ initialize_by_clustering <- function (data, params, mutation_position = "middle"
 ## set equal weights for all categories
 ## returns list with two values: vector of weights and matrix of parameters
 
-initialize_random <- function (){
+initialize_random <- function (params, cluster.number = 4, model = c("weibull", "exponential")){
+  if (model == "weibull"){
+    init_params <-matrix(ncol =2, nrow = cluster.number, byrow = TRUE)
+    colnames(init_params) = c("lambda", "p")
+    p_roots <- params[, "p_root"]
+    prand <- exp(runif(cluster.number, min=min(log (p_roots)),max=max(log (p_roots))))
+    init_params[, "p"] <-prand
+    lambda_roots <- params[, "lambda_weib_root"]
+    lambdarand <- exp(runif(cluster.number, min=min(log (lambda_roots)),max=max(log (lambda_roots))))
+    init_params[, "lambda"] <-lambdarand
+  }
+  else if (model == "exponential"){
+    init_params <-matrix( ncol =1, nrow = cluster.number, byrow = TRUE)
+    colnames(init_params) = c("lambda")
+    lambda_roots <- params[, "lambda_exp_root"]
+    lambdarand <- exp(runif(cluster.number, min=min(log (lambda_roots)),max=max(log (lambda_roots))))
+    init_params[, "lambda"] <-lambdarand
+  }
   
+  init_weights = rep(1/cluster.number, cluster.number)
+  list(iparameters = init_params, iweights = init_weights)
 }
 
-initialize_by <- function (init_params, init_weights, cluster.number = 4){
+initialize_by <- function (init_params, init_weights, model = c("weibull", "exponential"), cluster.number = 4){
   if (class(init_params) != "numeric") {
     stop ("Invalid argument params: expected vector of length 2*cluster.number")
   }
-  if (length(init_params) != 2*cluster.number) {
-    stop ("Invalid params length: expected vector of length 2*cluster.number")
+  if (model == "weibull"){
+    if (length(init_params) != 2*cluster.number) {
+      stop ("Invalid params length: expected vector of length 2*cluster.number")
+    }
+  }
+  else if (model == "exponential"){
+    if (length(init_params) != cluster.number) {
+      stop ("Invalid params length: expected vector of length cluster.number")
+    }
+  }
+  else {
+    stop (paste (c("Invalid model name: expected 'weibull' or 'exponential', recieved ", model), collpase = ""))
   }
   if (length(init_weights) != cluster.number) {
     stop ("Invalid weights length: expected vector of length cluster.number")
   }
+  if (sum(init_weights) != 1){
+    stop ("Invalid weights value: sum of weights must be equal to 1")
+  }
   
   categories <- seq(from = 1, to = cluster.number, by = 1)
-  init_params <-matrix(init_params, ncol =2, nrow = 4, byrow = TRUE)
-  colnames(init_params) = c("lambda", "p")
-
+  if (model == "weibull"){
+    init_params <-matrix(init_params, ncol =2, nrow = cluster.number, byrow = TRUE)
+    colnames(init_params) = c("lambda", "p")
+  }
+  else if (model == "exponential"){
+    init_params <-matrix(init_params, ncol =1, nrow = cluster.number, byrow = TRUE)
+    colnames(init_params) = c("lambda")
+  }
   
   list(iparameters = init_params, iweights = init_weights)
 }
@@ -91,7 +124,7 @@ filter_unsolved_and_single <-function(data, params){
 }
 
 
-em_procedure <-function(data, params, iter = 100, cluster.number= 4, init_method = c("cluster", "random", "by"), init_params = NULL, init_weights = NULL, mutation_position = "middle",  filtering = c("single", "unsolved"), trace = TRUE){
+em_procedure <-function(data, params, model = c("weibull", "exponential"), iter = 100, cluster.number= 4, init_method = c("cluster", "random", "by"), init_params = NULL, init_weights = NULL, mutation_position = "middle",  filtering = c("single", "unsolved"), trace = TRUE){
   if (filtering == "single"){
     fi <- filter_unsolved_and_single(data=data, params=params)
     fdata <- fi$fdata
@@ -107,12 +140,12 @@ em_procedure <-function(data, params, iter = 100, cluster.number= 4, init_method
   }
   
   if (init_method == "cluster") {
-    init <- initialize_by_clustering(data=fdata, params=fparams, mutation_position = mutation_position, cluster.number = cluster.number)
+    init <- initialize_by_clustering(data=fdata, params=fparams, model = model, mutation_position = mutation_position, cluster.number = cluster.number)
     iparameters <- init$iparameters
     iweights <- init$iweights 
   }
   else if (init_method == "random"){
-    init <- initialize_random(data=fdata, params=fparams, mutation_position = mutation_position, cluster.number = cluster.number)
+    init <- initialize_random(params=fparams, model = model, cluster.number = cluster.number)
     iparameters <- init$iparameters
     iweights <- init$iweights 
   }
@@ -120,7 +153,7 @@ em_procedure <-function(data, params, iter = 100, cluster.number= 4, init_method
     if (is.null(init_params) || is.null(init_weights)){
       stop ("Chosen inititalization method requires init_params and init_weights arguments")
     }
-    init <- initialize_by(init_params, init_weights, cluster.number = cluster.number)
+    init <- initialize_by(init_params, init_weights, model = model, cluster.number = cluster.number)
     iparameters <- init$iparameters
     iweights <- init$iweights 
   }
@@ -128,63 +161,27 @@ em_procedure <-function(data, params, iter = 100, cluster.number= 4, init_method
     stop (paste ("Invalid initialization method ", method ))
   }
   
-  em_results <- em(fdata, iparameters, iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number, trace = trace)
+  em_results <- em(data = fdata, parameters = iparameters, model = model, weights = iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number, trace = trace)
 
 }
 
 
-em <- function(data, parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trace = TRUE){
-  #todo: data must be filtered (before initialization?), and this new set must be used in em/ params (for every node) are not to be confused with cluster paramteres.
-  #  init <- initialize (data, params=parameters, mutation_position = mutation_position, cluster.number = cluster.number, method = "cluster")
-  #  parameters <- init$iparameters
-  #  weights <- init$iiweights
-  
-  #  dev.new()
-  #  h1=dev.cur()
-  #  myplot1 <- scatterplot3d(parameters[1,"lambda"], parameters[1,"p"], weights[1], color= "red", type="h", pch=19, xlim = c(max(parameters[1,"lambda"] - 0.1,0),parameters[1,"lambda"] + 0.1), ylim= c(max(parameters[1,"p"] - 1,0),parameters[1,"p"] + 1), zlim = c(0,1))
-  #  dev.new()
-  #  h2=dev.cur()
-  #  myplot2 <- scatterplot3d(parameters[2,"lambda"], parameters[2,"p"], weights[2], color= "blue", type="h", pch=19, xlim = c(max(parameters[2,"lambda"] - 0.1,0),parameters[2,"lambda"] + 0.1), ylim= c(max(parameters[2,"p"] - 1,0),parameters[2,"p"] + 1), zlim = c(0,1))
-  #  dev.new()
-  #  h3=dev.cur()
-  # myplot3 <- scatterplot3d(parameters[3,"lambda"], parameters[3,"p"], weights[3], color= "green", type="h", pch=19, xlim = c(max(parameters[3,"lambda"] - 0.1,0),parameters[3,"lambda"] + 0.1), ylim= c(max(parameters[3,"p"] - 1,0),parameters[3,"p"] + 1), zlim = c(0,1))
-  # dev.new()
-  #  h4=dev.cur()
-  # myplot4 <- scatterplot3d(parameters[3,"lambda"], parameters[4,"p"], weights[4], color= "black", type="h", pch=19, xlim = c(max(parameters[4,"lambda"] - 0.1,0),parameters[4,"lambda"] + 0.1), ylim= c(max(parameters[4,"p"] - 1,0),parameters[4,"p"] + 1), zlim = c(0,1))
-  # dev.new()
-  # h5=dev.cur()
+em <- function(data, model = c("weibull", "exponential"), parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trace = TRUE){
   if (trace){
-   myplot <- scatterplot3d(parameters[1,"lambda"], parameters[1,"p"], weights[1], color= "red", type="h", xlim = c(0, 0.1), ylim = c(0,10), zlim = c(0,1), pch=19)
-    # dev.set(h5)
-    myplot$points3d(parameters[2,"lambda"], parameters[2,"p"], weights[2], col= "blue", pch=19, type="h")
-    myplot$points3d(parameters[3,"lambda"], parameters[3,"p"], weights[3], col= "green", pch=19, type="h")
-    myplot$points3d(parameters[4,"lambda"], parameters[4,"p"], weights[4], col= "black",pch=19,  type="h")
+    trace(parameters, weights, cluster.number, init = TRUE)
   }
   old_lnL <- NULL
   for (i in seq(1,iter,1)){
     print (paste(c("------------Step ", i), collapse=""))
-    rkvectors <- compute_rkvectors(data=data, parameters=parameters, weights=weights)
-    parameters <- compute_params(data=data, rkvectors=rkvectors, mutation_position = mutation_position)
+    rkvectors <- compute_rkvectors(data=data, parameters=parameters, model = model, weights=weights)
+    parameters <- compute_params(data=data, rkvectors=rkvectors, model = model, mutation_position = mutation_position)
     weights <- compute_weights(rkvectors)
     print(rkvectors)
     print(weights)
-    # dev.set(h1)
-    #  myplot1$points3d(parameters[1,"lambda"], parameters[1,"p"], weights[1], col= "red", type="h")
-    # dev.set(h2)
-    # myplot2$points3d(parameters[2,"lambda"], parameters[2,"p"], weights[2], col= "blue", type="h")
-    # dev.set(h3)
-    #  myplot3$points3d(parameters[3,"lambda"], parameters[3,"p"], weights[3], col= "green", type="h")
-    # dev.set(h4)
-    # myplot4$points3d(parameters[4,"lambda"], parameters[4,"p"], weights[4], col= "black", type="h")
-    
-    # dev.set(h5)
     if (trace){
-      myplot$points3d(parameters[1,"lambda"], parameters[1,"p"], weights[1], col= "red", type="h")
-      myplot$points3d(parameters[2,"lambda"], parameters[2,"p"], weights[2], col= "blue", type="h")
-      myplot$points3d(parameters[3,"lambda"], parameters[3,"p"], weights[3], col= "green", type="h")
-      myplot$points3d(parameters[4,"lambda"], parameters[4,"p"], weights[4], col= "black", type="h")
+      trace(parameters, weights, cluster.number, init = FALSE)
     }  
-    model_lnL <- compute_model_lnL(data=data, parameters=parameters, weights=weights)
+    model_lnL <- compute_model_lnL(data=data, model = model,parameters=parameters, weights=weights)
     print ("model lnL")
     print(model_lnL)
     if (!is.null(old_lnL) && model_lnL - old_lnL < 0.0001){
@@ -192,8 +189,44 @@ em <- function(data, parameters, weights, iter = 100, cluster.number= 4, mutatio
     }
     else {old_lnL <- model_lnL}
   }
-  list(parameters=parameters, rkvectors=rkvectors, weights=weights, lnL = model_lnL)
+  
+  model_bic <- bic(lnL = model_lnL, model = model, cluster.number = cluster.number, n = length(data))
+  print ("model bic")
+  print(model_bic)
+  list(parameters=parameters, rkvectors=rkvectors, weights=weights, lnL = model_lnL, bic = model_bic)
 }
+
+trace <- function (parameters, weights, cluster.number, init = FALSE){
+  colors <- c("red", "blue", "green", "black", "orange", "gray", "violet")
+  if (ncol(parameters) == 2){ #weibull model
+    if (init){
+      myplot <- scatterplot3d(parameters[1,"lambda"], parameters[1,"p"], weights[1], color= colors[1], type="h", xlim = c(0, 0.1), ylim = c(0,10), zlim = c(0,1), pch=19)
+      for (i in seq(2,cluster.number,1)){
+        myplot$points3d(parameters[i,"lambda"], parameters[i,"p"], weights[i], col= colors[i], pch=19, type="h")
+      }
+    }
+    else {
+      for (i in seq(1,cluster.number,1)){
+        myplot$points3d(parameters[i,"lambda"], parameters[i,"p"], weights[i], col= colors[i], type="h")
+      }
+    }
+  }
+  
+  else if (ncol(parameters) == 1){ #exponential model
+    if (init){
+      myplot <- plot(parameters[1,"lambda"], weights[1], col= colors[1],  xlim = c(0, 0.1), ylim = c(0,1), xlab = "lambda", ylab = "weight", pch=19)
+      for (i in seq(2,cluster.number,1)){
+        points(parameters[i,"lambda"], weights[i], col= colors[i], pch=19)
+      }
+    }
+    else {
+      for (i in seq(1,cluster.number,1)){
+        points(parameters[i,"lambda"],  weights[i], col= colors[i])
+      }
+    }
+  }
+}
+
 
 compute_weights <- function(rkvectors){
   if (class(rkvectors) != "matrix"){
@@ -206,13 +239,18 @@ compute_weights <- function(rkvectors){
   })
 }
 
-compute_rkvectors <- function(data, parameters, weights){
+compute_rkvectors <- function(data, model = c("weibull", "exponential"), parameters, weights){
   cluster.number = length(weights)
   categories <- seq(from = 1, to = cluster.number, by = 1)
   rkvectors <- sapply(categories, function(k){
     rk <-sapply(names(data), function(nodename){
       cat_probs <- sapply ( categories, function (cat) {
-        lnL_dat <- lnlikelihood_weibull(data[[nodename]], parameters[cat,"lambda"], parameters[cat,"p"], fishy = TRUE)
+        if (model == "weibull"){
+          lnL_dat <- lnlikelihood_weibull(data[[nodename]], parameters[cat,"lambda"], parameters[cat,"p"], fishy = TRUE)
+        }
+        else {
+          lnL_dat <- lnlikelihood_exp(data[[nodename]], parameters[cat,"lambda"], fishy = TRUE)
+        }
         lnL <- lnL_dat[1]
         weights[cat] * exp(lnL)
       }
@@ -224,27 +262,43 @@ compute_rkvectors <- function(data, parameters, weights){
   rkvectors
 }
 
-compute_params <- function(data, rkvectors, mutation_position = "middle" ){
+compute_params <- function(data, model = c("weibull", "exponential"), rkvectors, mutation_position = "middle" ){
   cluster.number = ncol(rkvectors)
   categories <- seq(from = 1, to = cluster.number, by = 1)
-  new_params <-matrix(nrow = cluster.number, ncol = 2)
-  colnames(new_params) = c("lambda", "p")
+  if (model == "weibull"){
+    new_params <-matrix(nrow = cluster.number, ncol = 2)
+    colnames(new_params) = c("lambda", "p")
+  }
+  else {
+    new_params <-matrix(nrow = cluster.number, ncol = 1)
+    colnames(new_params) = c("lambda")
+  }
   for (k in categories){
     k_params <- find_single_root(data = data, mutation_position=mutation_position, rkvector = rkvectors[, k], jack = FALSE, pack = "rootsolve", verbose=TRUE)
-    new_params[k, "p"]  <- k_params["p_root"]
-    new_params[k, "lambda"]  <- k_params["lambda_weib_root"]
+    if (model == "weibull"){
+      new_params[k, "p"]  <- k_params["p_root"]
+      new_params[k, "lambda"]  <- k_params["lambda_weib_root"]
+    }
+    else {
+      new_params[k, "lambda"]  <- k_params["lambda_exp_root"]
+    }
   }
   new_params
 }
 
 
-compute_model_lnL <- function(data, parameters, weights){
+compute_model_lnL <- function(data, model = c("weibull", "exponential"), parameters, weights){
   cluster.number = length(weights)
   categories <- seq(from = 1, to = cluster.number, by = 1)
 
     likelihood_vector <-sapply(names(data), function(nodename){
       cat_probs <- sapply ( categories, function (cat) {
-        lnL_dat <- lnlikelihood_weibull(data[[nodename]], parameters[cat,"lambda"], parameters[cat,"p"], fishy = TRUE)
+        if (model == "weibull"){
+          lnL_dat <- lnlikelihood_weibull(data[[nodename]], parameters[cat,"lambda"], parameters[cat,"p"], fishy = TRUE)
+        }
+        else {
+          lnL_dat <- lnlikelihood_exp(data[[nodename]], parameters[cat,"lambda"], fishy = TRUE)
+        }
         lnL <- lnL_dat[1]
         weights[cat] * exp(lnL)
       }
