@@ -11,8 +11,8 @@ lrt_all(mutation_position = "middle", fishy = TRUE, tag = "middle_search", pack 
 benchmark(parameters(splitted,  jack = FALSE, pack = "nleqslv", filter= FALSE), parameters(splitted,  jack = FALSE, pack = "rootsolve", filter= FALSE),  replications = 1)
 
 ##
-sink (paste(c(getwd(), "/output/h1_emtest_1clus"),collapse= ""))
-em_results <- em_procedure(data=fdata, params=fparams, model = "weibull",iter = 1000, cluster.number= 1, init_method = "cluster", mutation_position = "middle",  filtering = "single", trace = TRUE)
+sink (paste(c(getwd(), "/output/h1_emtest_2cl"),collapse= ""))
+em_results <- em_procedure(data=splitted, params=params, model = "weibull",iter = 1000, cluster.number= 2, init_method = "cluster", mutation_position = "middle",  filtering = "single", trace = TRUE)
 sink()  
 
 sink (paste(c(getwd(), "/output/h1_emtest3"),collapse= ""))
