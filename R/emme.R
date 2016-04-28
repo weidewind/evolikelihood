@@ -76,6 +76,8 @@ ArgumentCheck::finishArgCheck(Check)
 
 
 pathnames <- list.files(pattern="^[A-Z].*[.]R$", path=file.path(c(getwd(), "R"), fsep = .Platform$file.sep), full.names=TRUE);
+print ("Sourcing files: ")
+print (pathnames)
 sapply(pathnames, FUN=source);
 
 
