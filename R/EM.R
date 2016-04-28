@@ -1,4 +1,4 @@
-list.of.packages <- c("rgl", "scatterplot3d")
+list.of.packages <- c("scatterplot3d")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 
