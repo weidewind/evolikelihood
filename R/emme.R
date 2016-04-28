@@ -75,14 +75,14 @@ if (init_method == "cluster"  && trials > 1){
 ArgumentCheck::finishArgCheck(Check)
 
 
-pathnames <- list.files(pattern="^[A-Z].*[.]R$", path=file.path(c(getwd(), "R"), fsep = .Platform$file.sep), full.names=TRUE);
+pathnames <- list.files(pattern="^[A-Z].*[.]R$", path=file.path(getwd(), "R", fsep = .Platform$file.sep), full.names=TRUE);
 print ("Sourcing files: ")
 print (pathnames)
 sapply(pathnames, FUN=source);
 
 
 #prot <- "h1"
-prot_data <-  read.csv(file.path(c(getwd(), "input", paste(c(prot,"_for_LRT.csv"), collapse="")),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
+prot_data <-  read.csv(file.path(getwd(), "input", paste(c(prot,"_for_LRT.csv"), collapse=""),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
 
@@ -92,7 +92,7 @@ count_cores <- detectCores() - 1
 cl <- makeCluster(count_cores)
 clusterExport(cl, "params", "splitted")
 em_results_list <- parLapply(cl, seq(1, trials, 1), function(trial){
-  sink (file.path(c(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", trial), collapse="")),fsep = .Platform$file.sep))
+  sink (file.path(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", trial), collapse=""),fsep = .Platform$file.sep))
   em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = "cluster", mutation_position = "middle",  filtering = "single", trace = TRUE)
   sink() 
   em_results
