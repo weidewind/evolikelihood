@@ -1,7 +1,7 @@
 list.of.packages <- c("plotly")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 print (new.packages)
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 
 library(scatterplot3d)
 ## equations for computing maximum likelihood estimators

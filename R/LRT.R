@@ -151,12 +151,12 @@ aic <- function (lnL, p){
 }
 
 # lnl - loglikelihood, p - number of free parameters in the model, n - sample size
-bic < -function (lnL, model = c("weibull", "exponential"), cluster.number, n){
+bic <- function (lnL, model = NULL, cluster.number, n){
   if (model == "weibull"){
-    p = 3*cluster.number -1;
+    p <- 3*cluster.number -1;
   }
   else {
-    p = 2*cluster.number -1;
+    p <- 2*cluster.number -1;
   }
   -2*lnL + p*log(n)
 }
