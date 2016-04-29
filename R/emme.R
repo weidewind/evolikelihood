@@ -86,14 +86,24 @@ prot_data <-  read.csv(file.path(getwd(), "input", paste(c(prot,"_for_LRT.csv"),
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
 
+
+#only for rstudio use
+if (is.null(model)){ # is never true or will throw an error if executed from rstudio as is
+  model <- "weibull"
+  trials <- 2
+  init_method <- "random"
+  categories <- 3
+}
+##
+
 # Calculate the number of cores
 count_cores <- detectCores() - 1
 # Initiate cluster
 cl <- makeCluster(count_cores)
-clusterExport(cl, "params", "splitted")
+clusterExport(cl, list("prot", "params", "splitted", "model", "categories", "init_method"))
 em_results_list <- parLapply(cl, seq(1, trials, 1), function(trial){
   sink (file.path(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = "cluster", mutation_position = "middle",  filtering = "single", trace = TRUE)
+  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = TRUE)
   sink() 
   em_results
 })
