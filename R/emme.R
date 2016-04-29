@@ -90,12 +90,12 @@ params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack
 
 
 #only for rstudio use
-if (is.null(model)){ # is never true or will throw an error if executed from rstudio as is
-  model <- "weibull"
-  trials <- 2
-  init_method <- "random"
-  categories <- 3
-}
+#if (is.null(model)){ # is never true or will throw an error if executed from rstudio as is
+#  model <- "weibull"
+#  trials <- 2
+#  init_method <- "random"
+#  categories <- 3
+#}
 ##
 
 # Calculate the number of cores
