@@ -1,0 +1,16 @@
+{
+    "contents" : "list.of.packages <- c(\"rbenchmark\")\nnew.packages <- setdiff(list.of.packages, installed.packages()[,\"Package\"])\nif(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')\n\n\nprot <- \"h1\"\nprot_data <-  read.csv(paste(c(getwd(), \"/data/\" ,prot,\"_for_LRT.csv\"), collapse=\"\"),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n##\ndraw_lnlikelihood (data=splitted, nodename = \"169.INTNODE2065\", to = 20, by = 0.01, mutation_position = \"middle\", fishy = TRUE)\ndraw_hazard(data=splitted, nodename = \"78.INTNODE4232\", to = 20, by = 0.05, mutation_position = \"middle\", fishy = TRUE)\n##\nlrt_all(mutation_position = \"middle\", fishy = TRUE, tag = \"middle_search\", pack = \"rootsolve\", verbose = TRUE)\n##\nbenchmark(parameters(splitted,  jack = FALSE, pack = \"nleqslv\", filter= FALSE), parameters(splitted,  jack = FALSE, pack = \"rootsolve\", filter= FALSE),  replications = 1)\n\n##\nsink (paste(c(getwd(), \"/output/h1_emtest_2cl\"),collapse= \"\"))\nem_results <- em_procedure(data=splitted, params=params, model = \"weibull\",iter = 1000, cluster.number= 2, init_method = \"cluster\", mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\nsink()  \n\nsink (paste(c(getwd(), \"/output/h1_emtest3\"),collapse= \"\"))\nem_results3 <- em_procedure(data=fdata,  params=fparams, iter = 1000, cluster.number= 5, init_method = \"by\", init_params = c(0.002,8,0.0001,0.9,0.005,0.5,0.002,1.5, 0.0001, 9), init_weights = c(0.15,0.25,0.25, 0.25, 0.1),mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\nsink() \n\n\n\n\nem_results <- em_procedure(data=fdata, params=fparams, iter = 1000, cluster.number= 4, init_method = \"by\", init_params = c(0.002,8,0.0001,0.7,0.005,0.7,0.002,1.2), init_weights = c(0.25,0.25,0.25, 0.25), mutation_position = \"middle\",  filtering = \"single\", trace = TRUE)\n",
+    "created" : 1461848014594.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1072708276",
+    "id" : "38C89F0A",
+    "lastKnownWriteTime" : 1461936572,
+    "path" : "C:/Users/weidewind/workspace/evolike/R/actions.R",
+    "project_path" : "R/actions.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

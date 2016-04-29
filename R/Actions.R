@@ -1,5 +1,10 @@
+list.of.packages <- c("rbenchmark")
+new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
+if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
+
+
 prot <- "h1"
-prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+prot_data <-  read.csv(paste(c(getwd(), "/data/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
 ##

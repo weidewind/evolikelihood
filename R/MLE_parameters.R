@@ -1,9 +1,8 @@
-list.of.packages <- c("rootSolve", "rbenchmark", "nleqslv")
+list.of.packages <- c("rootSolve", "nleqslv")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 
 library("rootSolve")
-library("rbenchmark")
 library("nleqslv")
 
 
