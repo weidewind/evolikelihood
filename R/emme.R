@@ -91,10 +91,10 @@ params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack
 
 #only for rstudio use
 #if (is.null(model)){ # is never true or will throw an error if executed from rstudio as is
-#  model <- "weibull"
-#  trials <- 2
+  #model <- "weibull"
+ # trials <- 20
 #  init_method <- "random"
-#  categories <- 3
+  #categories <- 3
 #}
 ##
 
@@ -102,10 +102,10 @@ params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack
 count_cores <- detectCores() - 1
 # Initiate cluster
 cl <- makeCluster(count_cores)
-clusterExport(cl, list("prot", "params", "splitted", "model", "categories", "init_method"))
+clusterExport(cl, list("prot", "params", "splitted", "model", "categories", "init_method"), envir = environment())
 clusterCall(cl, function() library(evolike))
 em_results_list <- parLapply(cl, seq(1, trials, 1), function(trial){
-  sink (file.path(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", trial), collapse=""),fsep = .Platform$file.sep))
+  sink (file.path(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
   em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = TRUE)
   sink() 
   em_results
