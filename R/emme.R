@@ -106,7 +106,7 @@ clusterExport(cl, list("prot", "params", "splitted", "model", "categories", "ini
 clusterCall(cl, function() library(evolike))
 em_results_list <- parLapply(cl, seq(1, trials, 1), function(trial){
   sink (file.path(getwd(), "output","wood_likelihood", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = TRUE)
+  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE)
   sink() 
   em_results
 })
