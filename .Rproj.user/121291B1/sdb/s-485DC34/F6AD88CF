@@ -1,0 +1,17 @@
+{
+    "contents" : "colfunc <- colorRampPalette(c(\"red\",\"yellow\",\"springgreen\",\"royalblue\"))\nplot(rep(1,20),col=colfunc(20),pch=19,cex=3)\n\n\ncolor.gradient <- function(x, colors=c(\"red\",\"yellow\",\"springgreen\",\"royalblue\"), colsteps=15) {\n  return( colorRampPalette(colors) (colsteps) [ findInterval(x, seq(min(x),max(x), length.out=colsteps)) ] )\n}\nx <- c(5555, 5558, 5564, 5593, 5597, 5603)\nplot(x,col=color.gradient(x), pch=19,cex=2)\n",
+    "created" : 1462449375622.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "4063174505",
+    "id" : "F6AD88CF",
+    "lastKnownWriteTime" : 1461936740,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
