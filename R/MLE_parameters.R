@@ -7,7 +7,11 @@ library("nleqslv")
 
 
 
-## multiroot, finds only one root 
+#'  ML parameters of exponential and weibull models applied to trees
+#'  
+#' @param data list of dataframes, produced by splitting read.csv(.._for_LRT.csv)
+#' @param mutation_position end, start or middle. Defines position of mutation on a branch
+#' @return A named numeric vector c(p_root, p_precision,lambda_weib_root, lambda_exp_root) 
 find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pack = "rootsolve", verbose=TRUE){
   # pack nleqslv
   # data is a list of dataframes, node_data is a dataframe

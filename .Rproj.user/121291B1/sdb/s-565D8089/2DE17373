@@ -1,0 +1,16 @@
+{
+    "contents" : "#!/usr/bin/env Rscript\nlist.of.packages <- c(\"parallel\", \"ArgumentCheck\", \"optparse\")\nnew.packages <- setdiff(list.of.packages, installed.packages()[,\"Package\"])\nif(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')\ninstall.packages(file.path(getwd(), \"evolike\",fsep = .Platform$file.sep), repos = NULL, type=\"source\")\nlibrary(evolike)\nlibrary(parallel)\nlibrary(optparse)\n\n\nprot <- \"n2\"\nmodel <- \"weibull\"\ntrials <- 20\ninit_method <- \"random\"\ncategories <- 2\ndiff_cats <-FALSE # parallel execution of cluster method for several categories, if true. parallel execution for several trials,if false\n\nprot_data <-  read.csv(file.path(getwd(), \"data\", paste(c(prot,\"_for_LRT.csv\"), collapse=\"\"),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n\n\n  \nif (diff_cats){\n  cats <- seq(1, categories, 1)\n}\n\n# Calculate the number of cores\ncount_cores <- detectCores() - 1\n# Initiate cluster\ncl <- makeCluster(count_cores)\nclusterExport(cl, list(\"prot\", \"params\", \"splitted\", \"model\", \"categories\", \"init_method\"), envir = environment())\nclusterCall(cl, function() library(evolike))\n\nif (diff_cats){\n  em_results_list <- parLapply(cl, cats, function(category){\n    sink (file.path(getwd(), \"output\",\"wood_likelihood\", model, paste(c(prot, \"_\", init_method, \"_\", category), collapse=\"\"),fsep = .Platform$file.sep))\n    em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= category, init_method = init_method, mutation_position = \"middle\",  filtering = \"single\", trace = FALSE)\n    sink() \n    em_results\n  })\n} else {\n  em_results_list <- parLapply(cl, seq(1, trials, 1), function(trial){ \n    sink (file.path(getwd(), \"output\",\"wood_likelihood\", model, paste(c(prot, \"_\", init_method, \"_\", categories, \"_\", trial), collapse=\"\"),fsep = .Platform$file.sep))\n    em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = \"middle\",  filtering = \"single\", trace = FALSE)\n    sink() \n    em_results\n  })\n}\n\nstopCluster(cl)\n\n ",
+    "created" : 1462460052111.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1627479239",
+    "id" : "2DE17373",
+    "lastKnownWriteTime" : 1462971418,
+    "path" : "C:/Users/weidewind/workspace/evolike/demo/emme_rstudio.R",
+    "project_path" : "demo/emme_rstudio.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
