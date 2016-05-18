@@ -2,7 +2,7 @@
 list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
-install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
+install.packages(file.path(getwd(), fsep = .Platform$file.sep), repos = NULL, type="source")
 library(evolike)
 library(parallel)
 library(optparse)
