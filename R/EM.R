@@ -1,7 +1,10 @@
 list.of.packages <- c("scatterplot3d")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
-library(scatterplot3d)
+
+#Don’t use library() or require(). These modify the search path, affecting what functions are available from the global environment. 
+#It’s better to use the DESCRIPTION to specify your package’s requirements
+#library(scatterplot3d)
 ## EM algorithm
 
 
