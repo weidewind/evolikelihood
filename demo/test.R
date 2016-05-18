@@ -47,3 +47,4 @@ with (opt, {
   print (" Trying to attach data ")
   data("mygroups")
   print (" Yaaaaaaap! ")
+})
