@@ -20,6 +20,7 @@ print (" parser ")
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
+print (" going to check ")
 with (opt, {
   
   Check <- ArgumentCheck::newArgCheck()
@@ -40,7 +41,7 @@ with (opt, {
   
   #* Return errors and warnings (if any)
   ArgumentCheck::finishArgCheck(Check)
-  
+  print (" all checked")
   
   ## load mygroups 
   print (" Trying to attach data ")
