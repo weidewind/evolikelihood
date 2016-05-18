@@ -49,7 +49,7 @@ categories <- 1
 prot_data <-  read.csv(file.path(getwd(), "data", paste(c(prot,"_for_LRT.csv"), collapse=""),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 
-count_cores <- detectCores() - 1
+count_cores <- 18
 # Initiate cluster
 cl <- makeCluster(count_cores)
 clusterExport(cl, list("prot", "prot_groups", "splitted", "model"), envir = environment())
