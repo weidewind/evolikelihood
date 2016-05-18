@@ -41,5 +41,6 @@ with (opt, {
   
   
   ## load mygroups 
+  print (" Trying to attach data ")
   data("mygroups")
   print (" Yaaaaaaap! ")
