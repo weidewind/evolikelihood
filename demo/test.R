@@ -3,10 +3,11 @@ list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 install.packages(file.path(getwd(), fsep = .Platform$file.sep), repos = NULL, type="source")
+print (" librarty ")
 library(evolike)
 library(parallel)
 library(optparse)
-
+print (" optlist")
 
 option_list = list(
   make_option(c("-p", "--prot"), type="character", default=NULL, 
@@ -15,6 +16,7 @@ option_list = list(
               help="model distr: weibull or exponential", metavar="character")
 ); 
 
+print (" parser ")
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
