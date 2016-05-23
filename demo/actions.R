@@ -7,11 +7,44 @@ prot <- "h1"
 prot_data <-  read.csv(paste(c(getwd(), "/data/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
 splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
 params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+
+proth3 <- "h3"
+prot_datah3 <-  read.csv(paste(c(getwd(), "/data/" ,proth3,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+splittedh3 <- split(prot_datah3, list(prot_datah3$site, prot_datah3$ancestor_node), drop=TRUE)
+paramsh3 <-parameters(splittedh3, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+
+protn1 <- "n1"
+prot_datan1 <-  read.csv(paste(c(getwd(), "/data/" ,protn1,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+splittedn1 <- split(prot_datan1, list(prot_datan1$site, prot_datan1$ancestor_node), drop=TRUE)
+paramsn1 <-parameters(splittedn1, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+
+protn2 <- "n2"
+prot_datan2 <-  read.csv(paste(c(getwd(), "/data/" ,protn2,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+splittedn2 <- split(prot_datan2, list(prot_datan2$site, prot_datan2$ancestor_node), drop=TRUE)
+paramsn2 <-parameters(splittedn2, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+
+
+
+
+
+
+#params <-parameters(splitted, mutation_position = "middle",  filter = FALSE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+#dumb_wood_likelihood(data = splitted, prot = prot, mutation_position = "middle", tag = "all_subtrees", fishy=TRUE, params = params, threshold = 0, all = TRUE)
+dumb_wood_likelihood(data = splittedh3, prot = proth3, mutation_position = "middle", tag = "all_subtrees", fishy=TRUE, params = paramsh3, threshold = 0, all = TRUE)
+dumb_wood_likelihood(data = splittedn2, prot = protn2, mutation_position = "middle", tag = "all_subtrees", fishy=TRUE, params = paramsn2, threshold = 0, all = TRUE)
+dumb_wood_likelihood(data = splittedn1, prot = protn1, mutation_position = "middle", tag = "all_subtrees", fishy=TRUE, params = paramsn1, threshold = 0, all = TRUE)
+
+
+
+
 ##
 draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
 draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
 ##
-lrt_all(mutation_position = "middle", fishy = TRUE, tag = "middle_search", pack = "rootsolve", verbose = TRUE)
+
+
+##
+lrt_all(mutation_position = "middle", fishy = TRUE, tag = "all_subtrees", pack = "rootsolve", verbose = TRUE, threshold = 0, all = TRUE)
 ##
 benchmark(parameters(splitted,  jack = FALSE, pack = "nleqslv", filter= FALSE), parameters(splitted,  jack = FALSE, pack = "rootsolve", filter= FALSE),  replications = 1)
 

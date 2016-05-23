@@ -1,0 +1,17 @@
+{
+    "contents" : "prot <- \"h3\"\nmodel <- \"exponential\"\ncategories <- 1\n\nprot_data <-  read.csv(file.path(getwd(), \"data\", paste(c(prot,\"_for_LRT.csv\"), collapse=\"\"),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\n\ngroup <- c(\"236.INTNODE2473\", \"189.INTNODE3183\", \"241.INTNODE3625\",  \"66.INTNODE3936\", \"218.INTNODE3933\")\n\ngrepper <- paste(group,collapse=\"|\")\ngroup_nodes <- grep(grepper, names(splitted))\ngroup_splitted <- splitted[group_nodes]\nparams <-parameters(group_splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\nsink (file.path(getwd(), \"output\",\"group_likelihood\", model, prot, \"false_adaptation\", fsep = .Platform$file.sep))\nem_results <- em_procedure(data=group_splitted, params=params, model = model,  cluster.number= 1, init_method = \"cluster\", mutation_position = \"middle\",  filtering = \"single\", trace = FALSE)\nsink() ",
+    "created" : 1463590680511.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1543115012",
+    "id" : "8BCAB9B3",
+    "lastKnownWriteTime" : 1463999958,
+    "path" : "C:/Users/weidewind/workspace/evolike/demo/false_adaptation.R",
+    "project_path" : "demo/false_adaptation.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

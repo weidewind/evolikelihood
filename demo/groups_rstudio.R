@@ -105,7 +105,7 @@ a_very_ugly_function_to_create_mygroups_data <- function(){
 data("mygroups")
 
 
-prot <- "h1"
+prot <- "h3"
 prot_groups <-mygroups[grep(paste(c("^", prot, "_"), collapse = ""), names(mygroups))]
 model <- "weibull"
 categories <- 1
