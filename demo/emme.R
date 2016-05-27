@@ -98,6 +98,7 @@ params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack
 #}
 ##
 
+## Note: you don't have to use unwieldy parLapply duncton on Unix - should have used mclapply instead
 # Calculate the number of cores
 count_cores <- detectCores() - 1
 # Initiate cluster

@@ -2,6 +2,18 @@ list.of.packages <- c("rbenchmark")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 
+#prot <- "h1"
+#prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
+#splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
+#node_data <- splitted["151.INTNODE4195"]
+#node_roots <- find_single_root(node_data, mutation_position = "middle", jack = FALSE, pack = "nleqslv", verbose = TRUE)
+
+#draw_hazard <-function(data=splitted, nodename = "78.NTNODE4232", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
+# draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
+#draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
+#h1_params <-parameters(splitted, mutation_position = "middle", filter= FALSE)
+#h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
+#h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
 
 prot <- "h1"
 prot_data <-  read.csv(paste(c(getwd(), "/data/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
@@ -22,10 +34,6 @@ protn2 <- "n2"
 prot_datan2 <-  read.csv(paste(c(getwd(), "/data/" ,protn2,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
 splittedn2 <- split(prot_datan2, list(prot_datan2$site, prot_datan2$ancestor_node), drop=TRUE)
 paramsn2 <-parameters(splittedn2, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
-
-
-
-
 
 
 #params <-parameters(splitted, mutation_position = "middle",  filter = FALSE, jack = FALSE, pack = "rootsolve", verbose = FALSE)

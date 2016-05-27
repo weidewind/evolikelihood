@@ -1,4 +1,4 @@
-list.of.packages <- c("scatterplot3d")
+list.of.packages <- c("scatterplot3d", "parallel")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 
@@ -279,30 +279,81 @@ compute_rkvectors <- function(data, model = NULL, parameters, weights){
   rkvectors
 }
 
-compute_params <- function(data, model = NULL, rkvectors, mutation_position = "middle" ){
+
+
+compute_params_insane <- function(data, model = NULL, rkvectors, mutation_position = "middle", parallel = FALSE ){
   cluster.number = ncol(rkvectors)
   categories <- seq(from = 1, to = cluster.number, by = 1)
-  if (model == "weibull"){
-    new_params <-matrix(nrow = cluster.number, ncol = 2)
-    colnames(new_params) = c("lambda", "p")
+  
+  if (parallel){
+    if (Sys.info()["sysname"] == "Windows"){
+      count_cores <- detectCores() - 1
+      cl <- makeCluster(count_cores)
+      clusterExport(cl, list("data", "rkvectors", "mutation_position", "model"), envir = environment())
+      clusterCall(cl, function() library(evolike))
+      func <-  parLapply
+    } else {
+      func <- mclapply
+      mc.cores <- cluster.number
+    }
+  } else {
+    func <- mysapply
+    mc.cores <- 0 # mock variable
   }
-  else {
-    new_params <-matrix(nrow = cluster.number, ncol = 1)
-    colnames(new_params) = c("lambda")
-  }
-  for (k in categories){
+  
+  params_list <- func(categories, function(k){
     k_params <- find_single_root(data = data, mutation_position=mutation_position, rkvector = rkvectors[, k], jack = FALSE, pack = "rootsolve", verbose=TRUE)
     if (model == "weibull"){
-      new_params[k, "p"]  <- k_params["p_root"]
-      new_params[k, "lambda"]  <- k_params["lambda_weib_root"]
+      c(k_params["lambda_weib_root"], k_params["p_root"])
+    } else {
+      c(k_params["lambda_exp_root"])
     }
-    else {
-      new_params[k, "lambda"]  <- k_params["lambda_exp_root"]
-    }
+  }, mc.cores = mc.cores)
+  
+  if (parallel && Sys.info()["sysname"] == "Windows"){
+    stopCluster(cl)
   }
+  
+  if(model == "weibull"){
+    new_params <- matrix(unlist(params_list), ncol = 2, byrow = TRUE)
+    colnames(new_params) = c("lambda", "p")
+  } else {
+    new_params <- matrix(unlist(params_list), ncol = 1, byrow = TRUE)
+    colnames(new_params) = c("lambda")
+  }
+  
   new_params
 }
 
+mysapply <- function(X, FUN, mc.cores = 1){
+  sapply(X, FUN)
+}
+
+
+
+compute_params <- function(data, model = NULL, rkvectors, mutation_position = "middle"){
+  cluster.number = ncol(rkvectors)
+  categories <- seq(from = 1, to = cluster.number, by = 1)
+  
+  params_list <- sapply(categories, function(k){
+    k_params <- find_single_root(data = data, mutation_position=mutation_position, rkvector = rkvectors[, k], jack = FALSE, pack = "rootsolve", verbose=TRUE)
+    if (model == "weibull"){
+      c(k_params["lambda_weib_root"], k_params["p_root"])
+    } else {
+      c(k_params["lambda_exp_root"])
+    }
+  })
+  
+  if(model == "weibull"){
+    new_params <- matrix(unlist(params_list), ncol = 2, byrow = TRUE)
+    colnames(new_params) = c("lambda", "p")
+  } else {
+    new_params <- matrix(unlist(params_list), ncol = 1, byrow = TRUE)
+    colnames(new_params) = c("lambda")
+  }
+  
+  new_params
+}
 
 compute_model_lnL <- function(data, model = NULL, parameters, weights){
   cluster.number = length(weights)

@@ -303,18 +303,7 @@ test_jack <- function(x, splitted){
   })
 }
 
-#prot <- "h1"
-#prot_data <-  read.csv(paste(c(getwd(), "/input/" ,prot,"_for_LRT.csv"), collapse=""),stringsAsFactors=FALSE)  
-#splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-#node_data <- splitted["151.INTNODE4195"]
-#node_roots <- find_single_root(node_data, mutation_position = "middle", jack = FALSE, pack = "nleqslv", verbose = TRUE)
 
-#draw_hazard <-function(data=splitted, nodename = "78.NTNODE4232", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
-#draw_lnlikelihood (data=splitted, nodename = "169.INTNODE2065", to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE)
-#draw_hazard(data=splitted, nodename = "78.INTNODE4232", to = 20, by = 0.05, mutation_position = "middle", fishy = TRUE)
-#h1_params <-parameters(splitted, mutation_position = "middle", filter= FALSE)
-#h1_prms_jack <-parameters(splitted, fishy = TRUE, jack = TRUE, filter= FALSE)
-#h1_prms_no_negative_roots <-parameters(splitted, fishy = TRUE, filter= FALSE)
 
 #sink("C:/Users/weidewind/workspace/perlCoevolution/TreeUtils/Phylo/MutMap/likelihood/nsyn/likelihood_games_h1")
 #h1_likelihood_games <-parameters(splitted, mutation_position = "middle", filter= FALSE, verbose = TRUE)
