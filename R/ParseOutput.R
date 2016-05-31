@@ -74,6 +74,41 @@ parse_group_output <- function(prot, model, categories){
   em_output
 }
 
+parse_group_LRT <-function(prot){
+  #prot <- "h3"
+  dir <- file.path(getwd(), "output", "group_likelihood", "weibull", prot, fsep = .Platform$file.sep)
+  complfiles <- list.files(path = dir, pattern = paste(c("^", prot,"_.*_complement"), collapse=""), all.files = FALSE,
+                        full.names = TRUE, recursive = FALSE)
+  groupfiles <- sapply(complfiles, function(f){
+    temp <- gregexpr('_', f)
+    tochop <- temp[[1]][length(temp[[1]])]
+    substr(f,1, tochop-1)
+  })
+
+  print (groupfiles)
+  print (complfiles)
+  
+  output <- lapply(groupfiles, function(wgfile){
+    gfname <-basename(wgfile)
+    
+    wgroup_file <-  readLines(wgfile)  
+    wg_grepped_lnL <- tail(wgroup_file, 5)[1]
+    wg_lnL <- as.numeric(strsplit(wg_grepped_lnL, '\\s+')[[1]][2])
+    
+    egroup_file <-  readLines(file.path(getwd(), "output", "group_likelihood", "exponential", prot, gfname, fsep = .Platform$file.sep))  
+    eg_grepped_lnL <- tail(egroup_file, 5)[1]
+    eg_lnL <- as.numeric(strsplit(eg_grepped_lnL, '\\s+')[[1]][2])
+    
+    lr <- 2*(wg_lnL-eg_lnL)
+    
+    print (eg_lnL)
+    print (wg_lnL)
+    print (gfname)
+    print (lr)
+  })
+  
+
+}
 
 color.gradient <- function(x, colors=c("red","yellow","springgreen","royalblue"), colsteps=15) {
   return( colorRampPalette(colors) (colsteps) [ findInterval(x, seq(min(x),max(x), length.out=colsteps)) ] )

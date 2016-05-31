@@ -57,6 +57,8 @@ wood_groups_test <- function(prot, model, tag){
 }
 
 
+
+
 ## takes a posterior probabilities from wood_likelihood analysis (you must explicitly select the optimal number of categories)
 chisq_groups_test < -function(prot, categories, tag){
   data("mygroups")

@@ -110,6 +110,8 @@ prot <- "h3"
 model <- "weibull" # weibull or exponential 
 wood_groups_test (prot, model, "mytag")
 
+## LRT for these data
+parse_group_LRT("h1")
 
 ## another way to test groups: chisq on contingency table produced from wood_likelihood/weibull data
 ## compares sums of a posteriori probabilities to belong to categories with p>1 and p <1  - for group and for its complement
@@ -119,3 +121,4 @@ wood_groups_test (prot, model, "mytag")
 prot <- "n2"
 categories <- 3
 chisq_groups_test (prot, categories, "mytag")
+
