@@ -47,12 +47,7 @@ with (opt, {
       argcheck = Check
     )
   }
-  if (all.equal(trial, as.integer(trial))){
-    ArgumentCheck::addError(
-      msg = "'trial' must be an integer",
-      argcheck = Check
-    )
-  }
+
   if (!(model %in% c("weibull", "exponential"))){
     ArgumentCheck::addError(
       msg = "valid 'model' options: weibull, exponential",
