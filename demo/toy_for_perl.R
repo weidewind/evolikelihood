@@ -72,7 +72,7 @@ with (opt, {
   print (getwd())
   prot_data <-  read.csv(file.path(getwd(), "data", paste(c(prot,"_for_LRT.csv"), collapse=""),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
   splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
-  params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+  params <-evolike::parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
   
   sink (file.path(getwd(), "output","toys", model, prot, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
   trackfile <-file.path(getwd(), "output","toys", model, prot, paste(c(prot, "_", init_method, "_", categories, "_", trial, "_track_"), collapse=""),fsep = .Platform$file.sep)
