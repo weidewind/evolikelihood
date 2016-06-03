@@ -168,12 +168,12 @@ em_procedure <-function(data, params, model = NULL, iter = 100, cluster.number= 
   print (iparameters)
   print (iweights)
   
-  em_results <- em(data = fdata, parameters = iparameters, model = model, weights = iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number, trace = trace, trackfile = trackfile, trackcount = trackcount)
+  em_results <- em(data = fdata, parameters = iparameters, model = model, weights = iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number,  trackfile = trackfile, trackcount = trackcount, trace = trace)
 
 }
 
 
-em <- function(data, model = NULL, parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trace = TRUE, trackfile = NULL, trackcount = 10){
+em <- function(data, model = NULL, parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trackfile = NULL, trackcount = 10, trace = TRUE){
   if (trace){
     myplot <- tracer(parameters, weights, cluster.number, init = TRUE)
   }
