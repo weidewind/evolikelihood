@@ -1,6 +1,6 @@
-\name{evolikelihood-package}
-\alias{evolikelihood-package}
-\alias{evolikelihood}
+\name{evolike-package}
+\alias{evolike-package}
+\alias{evolike}
 \docType{package}
 \title{
 What the package does (short line)
@@ -12,7 +12,7 @@ More about what it does (maybe more than one line)
 }
 \details{
 \tabular{ll}{
-Package: \tab evolikelihood\cr
+Package: \tab evolike\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2016-04-06\cr
