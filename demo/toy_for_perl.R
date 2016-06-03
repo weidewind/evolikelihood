@@ -2,7 +2,8 @@
 list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
-install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
+#install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
+install.packages(file.path(getwd(),fsep = .Platform$file.sep), repos = NULL, type="source")
 library(evolike)
 library(parallel)
 library(optparse)
@@ -14,7 +15,7 @@ option_list = list(
   make_option(c("-i", "--init_method"), type="character", default="cluster", 
               help="initialization method: clusterization of parameters (cluster) or radomly chosen parameters (random) [default= %default]", metavar="character"),
   make_option(c("-t", "--trial"), type="integer", default=1, 
-              help="number of trial", metavar="integer"),
+              help="pid of trial", metavar="integer"),
   make_option(c("-c", "--categories"), type="integer", default=3, 
               help="number of categories", metavar="integer"),
   make_option(c("-m", "--model"), type="character", default="weibull", 
