@@ -127,7 +127,7 @@ filter_unsolved_and_single <-function(data, params){
 }
 
 
-em_procedure <-function(data, params, model = NULL, iter = 100, cluster.number= 4, init_method = c("cluster", "random", "by"), init_params = NULL, init_weights = NULL, mutation_position = "middle",  filtering = c("single", "unsolved"), trace = TRUE){
+em_procedure <-function(data, params, model = NULL, iter = 100, cluster.number= 4, init_method = c("cluster", "random", "by"), init_params = NULL, init_weights = NULL, mutation_position = "middle",  filtering = c("single", "unsolved"), trace = TRUE, trackfile = NULL, trackcount = 10){
   if (filtering == "single"){
     fi <- filter_unsolved_and_single(data=data, params=params)
     fdata <- fi$fdata
@@ -168,12 +168,12 @@ em_procedure <-function(data, params, model = NULL, iter = 100, cluster.number= 
   print (iparameters)
   print (iweights)
   
-  em_results <- em(data = fdata, parameters = iparameters, model = model, weights = iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number, trace = trace)
+  em_results <- em(data = fdata, parameters = iparameters, model = model, weights = iweights, iter= iter, mutation_position = mutation_position, cluster.number = cluster.number, trace = trace, trackfile = trackfile, trackcount = trackcount)
 
 }
 
 
-em <- function(data, model = NULL, parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trace = TRUE){
+em <- function(data, model = NULL, parameters, weights, iter = 100, cluster.number= 4, mutation_position = "middle", trace = TRUE, trackfile = NULL, trackcount = 10){
   if (trace){
     myplot <- tracer(parameters, weights, cluster.number, init = TRUE)
   }
@@ -191,6 +191,11 @@ em <- function(data, model = NULL, parameters, weights, iter = 100, cluster.numb
     model_lnL <- compute_model_lnL(data=data, model = model,parameters=parameters, weights=weights)
     print ("model lnL")
     print(model_lnL)
+    if (!is.null(trackfile) && round(i/trackcount) == i/trackcount){
+      sink(paste(c(trackfile, "_", i), collapse=""))
+      print(model_lnL)
+      sink()
+    }
     if (!is.null(old_lnL) && model_lnL - old_lnL < 0.0001){
       break
     }

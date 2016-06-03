@@ -68,7 +68,8 @@ with (opt, {
   params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
   
   sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE)
+  trackfile <-file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial, "_track_"), collapse=""),fsep = .Platform$file.sep)
+  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE, trackfile = trackfile, trackcount = 1)
   sink() 
   
 })
