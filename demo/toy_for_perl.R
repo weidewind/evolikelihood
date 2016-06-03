@@ -68,7 +68,6 @@ with (opt, {
   #print ("So far so good")
   #sink()
   print (getwd())
-  print (em_procedure)
   prot_data <-  read.csv(file.path(getwd(), "data", paste(c(prot,"_for_LRT.csv"), collapse=""),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
   splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
   params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
