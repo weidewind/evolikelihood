@@ -2,17 +2,17 @@
 list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
-#install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
+install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
 #wd <- getwd()
 #setwd("..")
 #parent <- getwd()
 #setwd(wd)
 #install.packages(file.path(parent, "evolike", fsep = .Platform$file.sep), repos = NULL, type="source")
 #print ("trying to load")
-library("evolike")
+library(evolike)
 #print ("loaded")
-library("parallel")
-library("optparse")
+library(parallel)
+library(optparse)
 
 
 option_list = list(
