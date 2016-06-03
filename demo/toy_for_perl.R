@@ -9,10 +9,10 @@ if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-
 #setwd(wd)
 #install.packages(file.path(parent, "evolike", fsep = .Platform$file.sep), repos = NULL, type="source")
 #print ("trying to load")
-library(evolike)
+library("evolike")
 #print ("loaded")
-library(parallel)
-library(optparse)
+library("parallel")
+library("optparse")
 
 
 option_list = list(
