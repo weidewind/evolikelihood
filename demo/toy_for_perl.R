@@ -2,8 +2,8 @@
 list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
-#install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
-#library(evolike)
+install.packages(file.path(getwd(), "evolike",fsep = .Platform$file.sep), repos = NULL, type="source")
+library(evolike)
 library(parallel)
 library(optparse)
 
@@ -77,8 +77,8 @@ with (opt, {
   ArgumentCheck::finishArgCheck(Check)
   print (getwd())
   #print (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  #sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  #print ("So far so good")
-  #sink()
+  sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
+  print ("So far so good")
+  sink()
   
  
