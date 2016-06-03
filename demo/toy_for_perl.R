@@ -57,11 +57,19 @@ with (opt, {
 
   #* Return errors and warnings (if any)
   ArgumentCheck::finishArgCheck(Check)
-  print (getwd())
+  #print (getwd())
   #print (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
+  #sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
+  #print ("So far so good")
+  #sink()
+  print (getwd())
+  prot_data <-  read.csv(file.path(getwd(), "data", paste(c(prot,"_for_LRT.csv"), collapse=""),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  
+  splitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)
+  params <-parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
+  
   sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  print ("So far so good")
-  sink()
+  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE)
+  sink() 
   
 })
   
