@@ -77,7 +77,7 @@ with (opt, {
   ArgumentCheck::finishArgCheck(Check)
   print (getwd())
   #print (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
+  sink (file.path(getwd(), "output","toys", model, paste(c(prot, "_", init_method, "_", categories), collapse=""),fsep = .Platform$file.sep))
   print ("So far so good")
   sink()
   
