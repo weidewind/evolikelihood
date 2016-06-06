@@ -126,7 +126,7 @@ filter_unsolved_and_single <-function(data, params){
   list(fdata = fdata, fparams = fparams)
 }
 
-
+#' @export
 em_procedure <-function(data, params, model = NULL, iter = 100, cluster.number= 4, init_method = c("cluster", "random", "by"), init_params = NULL, init_weights = NULL, mutation_position = "middle",  filtering = c("single", "unsolved"), trace = TRUE, trackfile = NULL, trackcount = 10){
   if (filtering == "single"){
     fi <- filter_unsolved_and_single(data=data, params=params)

@@ -103,7 +103,7 @@ a_very_ugly_function_for_creating_mygroups_data <- function(){
 
 
 
-
+#' @export
 # makes em procedure for groups
 wood_groups_test <- function(prot, model, tag){
   data("mygroups")
@@ -163,7 +163,7 @@ wood_groups_test <- function(prot, model, tag){
 
 
 
-
+#' @export
 ## takes a posterior probabilities from wood_likelihood analysis (you must explicitly select the optimal number of categories)
 chisq_groups_test <-function(prot, categories, tag){
   data("mygroups")

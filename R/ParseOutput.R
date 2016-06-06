@@ -1,4 +1,4 @@
-
+#' @export
 parse_em_output <- function(prot, model, categories){
   emfiles <- list.files(path = file.path(getwd(), "output", "wood_likelihood", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_[a-z]+_", categories,".*"), collapse=""), all.files = FALSE,
                         full.names = TRUE, recursive = FALSE)
@@ -36,7 +36,7 @@ parse_em_output <- function(prot, model, categories){
   em_output
 }
 
-
+#' @export
 parse_group_output <- function(prot, model, categories){
   emfiles <- list.files(path = file.path(getwd(), "output", "group_likelihood", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_.*"), collapse=""), all.files = FALSE,
                         full.names = TRUE, recursive = FALSE)
@@ -74,6 +74,7 @@ parse_group_output <- function(prot, model, categories){
   em_output
 }
 
+#' @export
 parse_group_LRT <-function(prot){
   #prot <- "h3"
   dir <- file.path(getwd(), "output", "group_likelihood", "weibull", prot, fsep = .Platform$file.sep)
@@ -114,6 +115,7 @@ color.gradient <- function(x, colors=c("red","yellow","springgreen","royalblue")
   return( colorRampPalette(colors) (colsteps) [ findInterval(x, seq(min(x),max(x), length.out=colsteps)) ] )
 }
 
+#' @export
 show_em_results <- function (em_output, model = c("weibull", "exponential"), filter_worst = 0, filter_best = 0){
   bics <- sapply(em_output, function (elm){
     elm$bic

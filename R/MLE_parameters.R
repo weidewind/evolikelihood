@@ -129,6 +129,8 @@ find_single_root <- function(data, mutation_position, rkvector, jack = FALSE, pa
   }
 }
 
+
+#' @export
 ## computes parameters for all nodes, outputs only complete sets of parameters
 #parameters <-function(prot, tag, fishy = FALSE){
 parameters <-function(data, mutation_position = "middle", rkvector, filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE){

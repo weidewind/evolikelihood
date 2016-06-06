@@ -346,7 +346,7 @@ draw_lambda_derivative <- function(data, mutation_position = "end"){
   abline(v=0, h=0)
 }
 
-
+#' @export
 #draw_lnlikelihood(splitted, "169.INTNODE1233") 165  node  INTNODE1457 ! 165  node  INTNODE1457 h1 238   INTNODE1364 site  169  node  INTNODE2065
 draw_lnlikelihood <- function (data, nodename, to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE){
 #data <- splitted
@@ -366,6 +366,7 @@ draw_lnlikelihood <- function (data, nodename, to = 20, by = 0.01, mutation_posi
   draw_p_derivative(node_data,  mutation_position= mutation_position, to=to, by=by)
 }
 
+#' @export
 draw_hazard <-function(data, nodename, to = 20, by = 0.01, mutation_position = "middle", fishy = TRUE){
   data=splitted
   nodename = "78.INTNODE4232"
