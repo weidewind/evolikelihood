@@ -25,7 +25,9 @@ option_list = list(
   make_option(c("-c", "--categories"), type="integer", default=3, 
               help="number of categories", metavar="integer"),
   make_option(c("-m", "--model"), type="character", default="weibull", 
-              help="model distr: weibull or exponential", metavar="character")
+              help="model distr: weibull or exponential", metavar="character"),
+  make_option(c("-s", "--space"), type="integer", default=10, 
+              help="number of iterations between trackfiles", metavar="integer")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -75,8 +77,8 @@ with (opt, {
   params <- parameters(splitted, mutation_position = "middle",  filter = TRUE, jack = FALSE, pack = "rootsolve", verbose = FALSE)
   
   sink (file.path(getwd(), "output","toys", model, prot, paste(c(prot, "_", init_method, "_", categories, "_", trial), collapse=""),fsep = .Platform$file.sep))
-  trackfile <-file.path(getwd(), "output","toys", model, prot, paste(c(prot, "_", init_method, "_", categories, "_", trial, "_track_"), collapse=""),fsep = .Platform$file.sep)
-  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE, trackfile = trackfile, trackcount = 1)
+  trackfile <-file.path(getwd(), "output","toys", model, prot, paste(c(prot, "_", init_method, "_", categories, "_", trial, "_track"), collapse=""),fsep = .Platform$file.sep)
+  em_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, mutation_position = "middle",  filtering = "single", trace = FALSE, trackfile = trackfile, trackcount = space)
   sink() 
   
 })
