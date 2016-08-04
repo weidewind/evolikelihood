@@ -1,0 +1,17 @@
+{
+    "contents" : "prot <- \"h3\"\nmodel <- \"weibull\"\ncategories <- 1\n## prints parameters and bic for every group. Never tested for number of categories > 1\nem_output <- parse_group_output(prot, model, categories)\nem_output\n\n## group likelihoods for exp and weib models, almost the same procedure as for wood likelihood, \n## except that we compute parameters for 1 category only \n## (no optimization, do not be confused by em_procedure that is used here )\n## output  - in output/group_likelihood\nprot <- \"h3\"\nmodel <- \"weibull\" # weibull or exponential \nwood_groups_test (prot, model, \"mytag\")\n\n## LRT for those data (won't process files with tag)\nparse_group_LRT(\"h3\")\n\n## another way to test groups: chisq on contingency table produced from wood_likelihood/weibull data\n## compares sums of a posteriori probabilities to belong to categories with p>1 and p <1  - for group and for its complement\n## Attention! you must manually select the optimal number of categories for the protein (taken from wood_likelihood.xls, sheet wood_likelihood)\n## output  - in output/chisq\n\nprot <- \"n1\"\ncategories <- 4\nchisq_groups_test (prot, categories, \"_yup\")\n\n",
+    "created" : 1467043001103.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2225011794",
+    "id" : "CE181A16",
+    "lastKnownWriteTime" : 1466007735,
+    "path" : "C:/Users/weidewind/workspace/evolike/demo/groups_rstudio.R",
+    "project_path" : "demo/groups_rstudio.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

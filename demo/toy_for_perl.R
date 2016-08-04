@@ -1,4 +1,6 @@
 #!/usr/bin/env Rscript
+## is launched by parallel_test.pl script
+
 list.of.packages <- c("parallel", "ArgumentCheck", "optparse")
 new.packages <- setdiff(list.of.packages, installed.packages()[,"Package"])
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')

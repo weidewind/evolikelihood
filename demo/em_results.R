@@ -1,7 +1,7 @@
 prot <- "h3"
-categories <- 3
+categories <- 7
 model <- "weibull" # weibull or exponential 
-em_output <- parse_em_output(prot, model, categories)
+em_output <- parse_em_output(prot, model, categories, toys = TRUE)
 ## prints parameters and bic for every em launch
 em_output
 length(em_output)

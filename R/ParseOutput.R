@@ -1,9 +1,16 @@
 #' @export
-parse_em_output <- function(prot, model, categories){
+parse_em_output <- function(prot, model, categories, toys = FALSE){
   emfiles <- list.files(path = file.path(getwd(), "output", "wood_likelihood", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_[a-z]+_", categories,".*"), collapse=""), all.files = FALSE,
                         full.names = TRUE, recursive = FALSE)
   emshortfiles <- list.files(path = file.path(getwd(), "output", "wood_likelihood", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_[a-z]+_", categories,".*"), collapse=""), all.files = FALSE,
                              full.names = FALSE, recursive = FALSE)
+  if (toys){
+    emfiles <- list.files(path = file.path(getwd(), "output", "toys", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_[a-z]+_", categories,".*"), collapse=""), all.files = FALSE,
+                          full.names = TRUE, recursive = FALSE)
+    emshortfiles <- list.files(path = file.path(getwd(), "output", "toys", model, prot, fsep = .Platform$file.sep), pattern = paste(c(prot,"_[a-z]+_", categories,".*"), collapse=""), all.files = FALSE,
+                               full.names = FALSE, recursive = FALSE)
+    
+  }
   boo <- sapply(emfiles, function(ef){
     length(grep('model bic',readLines(ef),  value = TRUE, perl = TRUE)) == 1
   })

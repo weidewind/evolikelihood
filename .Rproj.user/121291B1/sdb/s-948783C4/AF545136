@@ -1,0 +1,17 @@
+{
+    "contents" : "prot <- \"h3\"\nmodel <- \"weibull\"\ntrials <- 1\ninit_method <- \"by\"\ncategories <- 5\n\nprot_data <-  read.csv(file.path(getwd(), \"data\", paste(c(prot,\"_for_LRT.csv\"), collapse=\"\"),fsep = .Platform$file.sep),stringsAsFactors=FALSE)  \nsplitted <- split(prot_data, list(prot_data$site, prot_data$ancestor_node), drop=TRUE)\nparams <-parameters(splitted, mutation_position = \"middle\",  filter = TRUE, jack = FALSE, pack = \"rootsolve\", verbose = FALSE)\n\ninit_params <- c(0.02488353, 1.1855846, 0.002038279, 0.7190239, 0.009424048, 1.2441657, 0.003892475, 1.7569080, 0.0003968850, 0.6881344)\ninit_weights <- c(0.03618808, 0.3256129, 0.09869532, 0.2190109, 0.3204928)\n\nsink (file.path(getwd(), \"output\",\"wood_likelihood\",  model, prot, paste(c(prot, \"_\", init_method, \"_\", categories), collapse=\"\"),fsep = .Platform$file.sep))\nem_results <- em_procedure(data=splitted, params=params, model = model, iter = 1000, cluster.number= categories, init_method = init_method, init_params = init_params, init_weights = init_weights, mutation_position = \"middle\",  filtering = \"single\", trace = FALSE)\nsink() \nem_results\n\n",
+    "created" : 1467018184799.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2556072212",
+    "id" : "AF545136",
+    "lastKnownWriteTime" : 1462971418,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

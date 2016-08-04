@@ -21,7 +21,7 @@ parse_group_LRT("h3")
 ## Attention! you must manually select the optimal number of categories for the protein (taken from wood_likelihood.xls, sheet wood_likelihood)
 ## output  - in output/chisq
 
-prot <- "n2"
-categories <- 3
-chisq_groups_test (prot, categories, "mytag")
+prot <- "h3"
+categories <- 6
+chisq_groups_test (prot, categories, "_on_six_categories")
 

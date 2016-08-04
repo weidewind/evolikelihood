@@ -1,0 +1,16 @@
+{
+    "contents" : "library(ape)\ntree<-read.tree(\"C:/Users/weidewind/Documents/CMD/Coevolution/Influenza/Kryazhimsky11/Mock/h1.l.r.newick\")\n#PatristicDistMatrix<-cophenetic(tree) #between leafs\nPatristicDistMatrix<-dist.nodes(tree) # between all nodes\n#hist(PatristicDistMatrix[lower.tri(PatristicDistMatrix)],breaks=seq(from=0, to=400, by=10))\n\n\ndimnames(PatristicDistMatrix) = list(c(tree$tip.label, tree$node.label), c(tree$tip.label, tree$node.label))\nwrite.csv(PatristicDistMatrix, \"C:/Users/weidewind/Documents/CMD/Coevolution/Influenza/Kryazhimsky11/Mock/h1_distance_matrix.csv\")\n",
+    "created" : 1469018024049.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1391291737",
+    "id" : "5BC8A4BF",
+    "lastKnownWriteTime" : 1443797342,
+    "path" : "C:/Users/weidewind/workspace/RCoevolution/R/Distances.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
